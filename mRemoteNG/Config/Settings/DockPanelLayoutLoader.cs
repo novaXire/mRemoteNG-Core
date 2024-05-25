@@ -10,7 +10,6 @@ using System.Runtime.Versioning;
 
 namespace mRemoteNG.Config.Settings
 {
-    [SupportedOSPlatform("windows")]
     public class DockPanelLayoutLoader
     {
         private readonly FrmMain _mainForm;
@@ -72,13 +71,13 @@ namespace mRemoteNG.Config.Settings
             try
             {
                 if (persistString == typeof(ConfigWindow).ToString())
-                    return Windows.ConfigForm;
+                    return WindowsUI.ConfigForm;
 
                 if (persistString == typeof(ConnectionTreeWindow).ToString())
-                    return Windows.TreeForm;
+                    return WindowsUI.TreeForm;
 
                 if (persistString == typeof(ErrorAndInfoWindow).ToString())
-                    return Windows.ErrorsForm;
+                    return WindowsUI.ErrorsForm;
             }
             catch (Exception ex)
             {

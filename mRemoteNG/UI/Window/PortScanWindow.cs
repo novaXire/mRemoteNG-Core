@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -302,13 +302,13 @@ namespace mRemoteNG.UI.Window
         /// </summary>
         private ContainerInfo GetDestinationContainerForImportedHosts()
         {
-            ConnectionInfo selectedNode = Windows.TreeForm.SelectedNode
-                            ?? Windows.TreeForm.ConnectionTree.ConnectionTreeModel.RootNodes.OfType<RootNodeInfo>()
+            ConnectionInfo selectedNode = WindowsUI.TreeForm.SelectedNode
+                            ?? WindowsUI.TreeForm.ConnectionTree.ConnectionTreeModel.RootNodes.OfType<RootNodeInfo>()
                                       .First();
 
             // if a putty node is selected, place imported connections in the root connection node
             if (selectedNode is RootPuttySessionsNodeInfo || selectedNode is PuttySessionInfo)
-                selectedNode = Windows.TreeForm.ConnectionTree.ConnectionTreeModel.RootNodes.OfType<RootNodeInfo>()
+                selectedNode = WindowsUI.TreeForm.ConnectionTree.ConnectionTreeModel.RootNodes.OfType<RootNodeInfo>()
                                       .First();
 
             // if the selected node is a connection, use its parent container
