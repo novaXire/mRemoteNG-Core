@@ -899,12 +899,12 @@ namespace mRemoteNG.UI.Controls
 
         private void OnImportActiveDirectoryClicked(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.ActiveDirectoryImport);
+            WindowsUI.Show(WindowType.ActiveDirectoryImport);
         }
 
         private void OnImportPortScanClicked(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.PortScan);
+            WindowsUI.Show(WindowType.PortScan);
         }
 
         private void OnExportFileClicked(object sender, EventArgs e)
