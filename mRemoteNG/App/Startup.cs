@@ -84,7 +84,7 @@ namespace mRemoteNG.App
                 await _appUpdate.GetUpdateInfoAsync();
                 if (_appUpdate.IsUpdateAvailable())
                 {
-                    Windows.Show(WindowType.Update);
+                    WindowsUI.Show(WindowType.Update);
                 }
             }
             catch (Exception ex)

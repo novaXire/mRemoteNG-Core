@@ -299,7 +299,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
 
         private void btnUpdateCheckNow_Click(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.Update);
+            WindowsUI.Show(WindowType.Update);
         }
 
         private void chkUseProxyForAutomaticUpdates_CheckedChanged(object sender, EventArgs e)

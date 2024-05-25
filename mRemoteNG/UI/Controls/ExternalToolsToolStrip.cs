@@ -10,7 +10,6 @@ using System.Runtime.Versioning;
 
 namespace mRemoteNG.UI.Controls
 {
-    [SupportedOSPlatform("windows")]
     public class ExternalToolsToolStrip : ToolStrip
     {
         private IContainer components;
@@ -100,7 +99,7 @@ namespace mRemoteNG.UI.Controls
         {
             ExternalTool extA = (ExternalTool)((ToolStripButton)sender).Tag;
 
-            Connection.ConnectionInfo selectedTreeNode = Windows.TreeForm.SelectedNode;
+            Connection.ConnectionInfo selectedTreeNode = WindowsUI.TreeForm.SelectedNode;
             if (selectedTreeNode != null && selectedTreeNode.GetTreeNodeType() == TreeNodeType.Connection ||
                 selectedTreeNode.GetTreeNodeType() == TreeNodeType.PuttySession)
                 extA.Start(selectedTreeNode);

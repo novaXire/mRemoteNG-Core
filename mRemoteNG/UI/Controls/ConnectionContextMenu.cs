@@ -830,11 +830,11 @@ namespace mRemoteNG.UI.Controls
         {
             try
             {
-                Windows.Show(WindowType.SSHTransfer);
-                Windows.SshtransferForm.Hostname = _connectionTree.SelectedNode.Hostname;
-                Windows.SshtransferForm.Username = _connectionTree.SelectedNode.Username;
-                Windows.SshtransferForm.Password = _connectionTree.SelectedNode.Password.ConvertToUnsecureString();
-                Windows.SshtransferForm.Port = Convert.ToString(_connectionTree.SelectedNode.Port);
+                WindowsUI.Show(WindowType.SSHTransfer);
+                WindowsUI.SshtransferForm.Hostname = _connectionTree.SelectedNode.Hostname;
+                WindowsUI.SshtransferForm.Username = _connectionTree.SelectedNode.Username;
+                WindowsUI.SshtransferForm.Password = _connectionTree.SelectedNode.Password.ConvertToUnsecureString();
+                WindowsUI.SshtransferForm.Port = Convert.ToString(_connectionTree.SelectedNode.Port);
             }
             catch (Exception ex)
             {

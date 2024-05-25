@@ -88,27 +88,27 @@ namespace mRemoteNG.UI.Menu
 
         private void mMenToolsSSHTransfer_Click(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.SSHTransfer);
+            WindowsUI.Show(WindowType.SSHTransfer);
         }
 
         private void mMenToolsUVNCSC_Click(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.UltraVNCSC);
+            WindowsUI.Show(WindowType.UltraVNCSC);
         }
 
         private void mMenToolsExternalApps_Click(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.ExternalApps);
+            WindowsUI.Show(WindowType.ExternalApps);
         }
 
         private void mMenToolsPortScan_Click(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.PortScan);
+            WindowsUI.Show(WindowType.PortScan);
         }
 
         private void mMenToolsOptions_Click(object sender, EventArgs e)
         {
-            Windows.Show(WindowType.Options);
+            WindowsUI.Show(WindowType.Options);
         }
 
         #endregion
