@@ -4,9 +4,7 @@ using System.Linq;
 using System.Runtime.Versioning;
 using mRemoteNG.Connection;
 using mRemoteNG.Connection.Protocol;
-using mRemoteNG.Connection.Protocol.Http;
 using mRemoteNG.Connection.Protocol.RDP;
-using mRemoteNG.Connection.Protocol.VNC;
 using mRemoteNG.Container;
 using mRemoteNG.Security;
 using mRemoteNG.Tree;
@@ -169,14 +167,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
             connectionRecord.ExtApp = headers.Contains("ExtApp")
                 ? connectionCsv[headers.IndexOf("ExtApp")] : "";
 
-            connectionRecord.VNCProxyUsername = headers.Contains("VNCProxyUsername")
-                ? connectionCsv[headers.IndexOf("VNCProxyUsername")]
-                : "";
-
-            connectionRecord.VNCProxyPassword = headers.Contains("VNCProxyPassword")
-                ? connectionCsv[headers.IndexOf("VNCProxyPassword")]
-                : "";
-
             connectionRecord.RDGatewayUsername = headers.Contains("RDGatewayUsername")
                 ? connectionCsv[headers.IndexOf("RDGatewayUsername")]
                 : "";
@@ -193,21 +183,9 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
                 ? connectionCsv[headers.IndexOf("RDGatewayHostname")]
                 : "";
 
-            if (headers.Contains("RDGatewayExternalCredentialProvider"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("RDGatewayExternalCredentialProvider")], out ExternalCredentialProvider value))
-                    connectionRecord.RDGatewayExternalCredentialProvider = value;
-            }
-
             connectionRecord.RDGatewayUserViaAPI = headers.Contains("RDGatewayUserViaAPI")
                 ? connectionCsv[headers.IndexOf("RDGatewayUserViaAPI")]
                 : "";
-
-
-            connectionRecord.VNCProxyIP = headers.Contains("VNCProxyIP")
-                ? connectionCsv[headers.IndexOf("VNCProxyIP")]
-                : "";
-
 
             connectionRecord.RDPStartProgram = headers.Contains("RDPStartProgram")
                 ? connectionCsv[headers.IndexOf("RDPStartProgram")]
@@ -263,12 +241,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
             {
                 if (bool.TryParse(connectionCsv[headers.IndexOf("UseEnhancedMode")], out bool value))
                     connectionRecord.UseEnhancedMode = value;
-            }
-
-            if (headers.Contains("RenderingEngine"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("RenderingEngine")], out HTTPBase.RenderingEngine value))
-                    connectionRecord.RenderingEngine = value;
             }
 
             if (headers.Contains("RDPAuthenticationLevel"))
@@ -397,54 +369,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
                     connectionRecord.RedirectKeys = value;
             }
 
-            if (headers.Contains("VNCCompression"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("VNCCompression")], out ProtocolVNC.Compression value))
-                    connectionRecord.VNCCompression = value;
-            }
-
-            if (headers.Contains("VNCEncoding"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("VNCEncoding")], out ProtocolVNC.Encoding value))
-                    connectionRecord.VNCEncoding = value;
-            }
-
-            if (headers.Contains("VNCAuthMode"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("VNCAuthMode")], out ProtocolVNC.AuthMode value))
-                    connectionRecord.VNCAuthMode = value;
-            }
-
-            if (headers.Contains("VNCProxyType"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("VNCProxyType")], out ProtocolVNC.ProxyType value))
-                    connectionRecord.VNCProxyType = value;
-            }
-
-            if (headers.Contains("VNCProxyPort"))
-            {
-                if (int.TryParse(connectionCsv[headers.IndexOf("VNCProxyPort")], out int value))
-                    connectionRecord.VNCProxyPort = value;
-            }
-
-            if (headers.Contains("VNCColors"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("VNCColors")], out ProtocolVNC.Colors value))
-                    connectionRecord.VNCColors = value;
-            }
-
-            if (headers.Contains("VNCSmartSizeMode"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("VNCSmartSizeMode")], out ProtocolVNC.SmartSizeMode value))
-                    connectionRecord.VNCSmartSizeMode = value;
-            }
-
-            if (headers.Contains("VNCViewOnly"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("VNCViewOnly")], out bool value))
-                    connectionRecord.VNCViewOnly = value;
-            }
-
             if (headers.Contains("RDGatewayUsageMethod"))
             {
                 if (Enum.TryParse(connectionCsv[headers.IndexOf("RDGatewayUsageMethod")], out RDGatewayUsageMethod value))
@@ -467,16 +391,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
             {
                 if (Enum.TryParse(connectionCsv[headers.IndexOf("RdpVersion")], true, out RdpVersion version))
                     connectionRecord.RdpVersion = version;
-            }
-            if (headers.Contains("ExternalCredentialProvider"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("ExternalCredentialProvider")], out ExternalCredentialProvider value))
-                    connectionRecord.ExternalCredentialProvider = value;
-            }
-            if (headers.Contains("ExternalAddressProvider"))
-            {
-                if (Enum.TryParse(connectionCsv[headers.IndexOf("ExternalAddressProvider")], out ExternalAddressProvider value))
-                    connectionRecord.ExternalAddressProvider = value;
             }
 
             #region Inheritance
@@ -785,72 +699,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
             {
                 if (bool.TryParse(connectionCsv[headers.IndexOf("InheritExtApp")], out bool value))
                     connectionRecord.Inheritance.ExtApp = value;
-            }
-
-            if (headers.Contains("InheritVNCCompression"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCCompression")], out bool value))
-                    connectionRecord.Inheritance.VNCCompression = value;
-            }
-
-            if (headers.Contains("InheritVNCEncoding"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCEncoding")], out bool value))
-                    connectionRecord.Inheritance.VNCEncoding = value;
-            }
-
-            if (headers.Contains("InheritVNCAuthMode"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCAuthMode")], out bool value))
-                    connectionRecord.Inheritance.VNCAuthMode = value;
-            }
-
-            if (headers.Contains("InheritVNCProxyType"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCProxyType")], out bool value))
-                    connectionRecord.Inheritance.VNCProxyType = value;
-            }
-
-            if (headers.Contains("InheritVNCProxyIP"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCProxyIP")], out bool value))
-                    connectionRecord.Inheritance.VNCProxyIP = value;
-            }
-
-            if (headers.Contains("InheritVNCProxyPort"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCProxyPort")], out bool value))
-                    connectionRecord.Inheritance.VNCProxyPort = value;
-            }
-
-            if (headers.Contains("InheritVNCProxyUsername"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCProxyUsername")], out bool value))
-                    connectionRecord.Inheritance.VNCProxyUsername = value;
-            }
-
-            if (headers.Contains("InheritVNCProxyPassword"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCProxyPassword")], out bool value))
-                    connectionRecord.Inheritance.VNCProxyPassword = value;
-            }
-
-            if (headers.Contains("InheritVNCColors"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCColors")], out bool value))
-                    connectionRecord.Inheritance.VNCColors = value;
-            }
-
-            if (headers.Contains("InheritVNCSmartSizeMode"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCSmartSizeMode")], out bool value))
-                    connectionRecord.Inheritance.VNCSmartSizeMode = value;
-            }
-
-            if (headers.Contains("InheritVNCViewOnly"))
-            {
-                if (bool.TryParse(connectionCsv[headers.IndexOf("InheritVNCViewOnly")], out bool value))
-                    connectionRecord.Inheritance.VNCViewOnly = value;
             }
 
             if (headers.Contains("InheritRDGatewayUsageMethod"))

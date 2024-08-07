@@ -40,13 +40,10 @@ namespace mRemoteNG.UI.Window
             this.lblEndIP = new mRemoteNG.UI.Controls.MrngLabel();
             this.olvHosts = new mRemoteNG.UI.Controls.MrngListView();
             this.resultsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.importHTTPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importHTTPSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importRDPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importRloginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importSSH2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importTelnetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importVNCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnImport = new MrngButton();
             this.cbProtocol = new MrngComboBox();
             this.lblOnlyImport = new mRemoteNG.UI.Controls.MrngLabel();
@@ -144,29 +141,12 @@ namespace mRemoteNG.UI.Window
             // resultsMenuStrip
             // 
             this.resultsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.importHTTPToolStripMenuItem,
-            this.importHTTPSToolStripMenuItem,
             this.importRDPToolStripMenuItem,
             this.importRloginToolStripMenuItem,
             this.importSSH2ToolStripMenuItem,
-            this.importTelnetToolStripMenuItem,
-            this.importVNCToolStripMenuItem});
+            this.importTelnetToolStripMenuItem});
             this.resultsMenuStrip.Name = "resultsMenuStrip";
             this.resultsMenuStrip.Size = new System.Drawing.Size(148, 158);
-            // 
-            // importHTTPToolStripMenuItem
-            // 
-            this.importHTTPToolStripMenuItem.Name = "importHTTPToolStripMenuItem";
-            this.importHTTPToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.importHTTPToolStripMenuItem.Text = "Import HTTP";
-            this.importHTTPToolStripMenuItem.Click += new System.EventHandler(this.importHTTPToolStripMenuItem_Click);
-            // 
-            // importHTTPSToolStripMenuItem
-            // 
-            this.importHTTPSToolStripMenuItem.Name = "importHTTPSToolStripMenuItem";
-            this.importHTTPSToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.importHTTPSToolStripMenuItem.Text = "Import HTTPS";
-            this.importHTTPSToolStripMenuItem.Click += new System.EventHandler(this.importHTTPSToolStripMenuItem_Click);
             // 
             // importRDPToolStripMenuItem
             // 
@@ -195,13 +175,6 @@ namespace mRemoteNG.UI.Window
             this.importTelnetToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.importTelnetToolStripMenuItem.Text = "Import Telnet";
             this.importTelnetToolStripMenuItem.Click += new System.EventHandler(this.importTelnetToolStripMenuItem_Click);
-            // 
-            // importVNCToolStripMenuItem
-            // 
-            this.importVNCToolStripMenuItem.Name = "importVNCToolStripMenuItem";
-            this.importVNCToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.importVNCToolStripMenuItem.Text = "Import VNC";
-            this.importVNCToolStripMenuItem.Click += new System.EventHandler(this.importVNCToolStripMenuItem_Click);
             // 
             // btnImport
             // 
@@ -515,13 +488,10 @@ namespace mRemoteNG.UI.Window
 
         private System.Windows.Forms.ContextMenuStrip resultsMenuStrip;
         private System.ComponentModel.IContainer components;
-        private System.Windows.Forms.ToolStripMenuItem importHTTPToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importHTTPSToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importRDPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importRloginToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importSSH2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importTelnetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importVNCToolStripMenuItem;
 		private System.Windows.Forms.Label lblTimeout;
 		private Controls.MrngNumericUpDown numericSelectorTimeout;
         private System.Windows.Forms.TableLayoutPanel pnlIp;

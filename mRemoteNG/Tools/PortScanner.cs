@@ -50,8 +50,8 @@ namespace mRemoteNG.Tools
             if (checkDefaultPortsOnly)
                 _ports.AddRange(new[]
                 {
-                    ScanHost.SshPort, ScanHost.TelnetPort, ScanHost.HttpPort, ScanHost.HttpsPort, ScanHost.RloginPort,
-                    ScanHost.RdpPort, ScanHost.VncPort
+                    ScanHost.SshPort, ScanHost.TelnetPort, ScanHost.RloginPort,
+                    ScanHost.RdpPort
                 });
             else
             {
@@ -219,14 +219,6 @@ namespace mRemoteNG.Tools
                     {
                         scanHost.Telnet = isPortOpen;
                     }
-                    else if (port == ScanHost.HttpPort)
-                    {
-                        scanHost.Http = isPortOpen;
-                    }
-                    else if (port == ScanHost.HttpsPort)
-                    {
-                        scanHost.Https = isPortOpen;
-                    }
                     else if (port == ScanHost.RloginPort)
                     {
                         scanHost.Rlogin = isPortOpen;
@@ -234,10 +226,6 @@ namespace mRemoteNG.Tools
                     else if (port == ScanHost.RdpPort)
                     {
                         scanHost.Rdp = isPortOpen;
-                    }
-                    else if (port == ScanHost.VncPort)
-                    {
-                        scanHost.Vnc = isPortOpen;
                     }
                 }
             }

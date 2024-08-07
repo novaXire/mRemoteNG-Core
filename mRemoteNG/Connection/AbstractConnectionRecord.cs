@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using mRemoteNG.Connection.Protocol;
-using mRemoteNG.Connection.Protocol.Http;
 using mRemoteNG.Connection.Protocol.RDP;
-using mRemoteNG.Connection.Protocol.VNC;
 using mRemoteNG.Properties;
 using mRemoteNG.Tools;
 using mRemoteNG.Tools.Attributes;
@@ -23,11 +21,7 @@ namespace mRemoteNG.Connection
         private string _icon;
         private string _panel;
 
-        private string _hostname;
-        private ExternalAddressProvider _externalAddressProvider;
-        private string _ec2InstanceId = "";
-        private string _ec2Region = "";
-        private ExternalCredentialProvider _externalCredentialProvider;
+        private string _hostname;             
         private string _userViaAPI = "";
         private string _username = "";
         private SecureString _password = null;
@@ -47,7 +41,6 @@ namespace mRemoteNG.Connection
         private int _rdpMinutesToIdleTimeout;
         private bool _rdpAlertIdleTimeout;
         private string _loadBalanceInfo;
-        private HTTPBase.RenderingEngine _renderingEngine;
         private bool _useCredSsp;
         private bool _useRestrictedAdmin;
         private bool _useRCG;
@@ -59,10 +52,8 @@ namespace mRemoteNG.Connection
         private string _rdGatewayUsername;
         private string _rdGatewayPassword;
         private string _rdGatewayDomain;
-        private string _rdGatewayAccessToken;
-        private ExternalCredentialProvider _rdGatewayExternalCredentialProvider;
+        private string _rdGatewayAccessToken;        
         private string _rdGatewayUserViaAPI = "";
-
 
         private RDPResolutions _resolution;
         private bool _automaticResize;
@@ -96,18 +87,6 @@ namespace mRemoteNG.Connection
         private string _rdpStartProgram;
         private string _rdpStartProgramWorkDir;
         private bool _favorite;
-
-        private ProtocolVNC.Compression _vncCompression;
-        private ProtocolVNC.Encoding _vncEncoding;
-        private ProtocolVNC.AuthMode _vncAuthMode;
-        private ProtocolVNC.ProxyType _vncProxyType;
-        private string _vncProxyIp;
-        private int _vncProxyPort;
-        private string _vncProxyUsername;
-        private string _vncProxyPassword;
-        private ProtocolVNC.Colors _vncColors;
-        private ProtocolVNC.SmartSizeMode _vncSmartSizeMode;
-        private bool _vncViewOnly;
 
         #endregion
 
@@ -176,18 +155,6 @@ namespace mRemoteNG.Connection
             set => SetField(ref _port, value, "Port");
         }
 
-        // external credential provider selector
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.ExternalCredentialProvider)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionExternalCredentialProvider)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.RDP, ProtocolType.SSH1, ProtocolType.SSH2)]
-        public ExternalCredentialProvider ExternalCredentialProvider
-        {
-            get => GetPropertyValue("ExternalCredentialProvider", _externalCredentialProvider);
-            set => SetField(ref _externalCredentialProvider, value, "ExternalCredentialProvider");
-        }
-
         // credential record identifier for external credential provider
         [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
          LocalizedAttributes.LocalizedDisplayName(nameof(Language.UserViaAPI)),
@@ -223,44 +190,11 @@ namespace mRemoteNG.Connection
         [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
          LocalizedAttributes.LocalizedDisplayName(nameof(Language.Domain)),
          LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionDomain)),
-         AttributeUsedInProtocol(ProtocolType.RDP, ProtocolType.IntApp, ProtocolType.PowerShell)]
+         AttributeUsedInProtocol(ProtocolType.RDP, ProtocolType.IntApp)]
         public string Domain
         {
             get => GetPropertyValue("Domain", _domain).Trim();
             set => SetField(ref _domain, value?.Trim(), "Domain");
-        }
-
-
-        // external address provider selector
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.ExternalAddressProvider)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionExternalAddressProvider)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.RDP, ProtocolType.SSH2)]
-        public ExternalAddressProvider ExternalAddressProvider
-        {
-            get => GetPropertyValue("ExternalAddressProvider", _externalAddressProvider);
-            set => SetField(ref _externalAddressProvider, value, "ExternalAddressProvider");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
-        LocalizedAttributes.LocalizedDisplayName(nameof(Language.EC2InstanceId)),
-        LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionEC2InstanceId)),
-        AttributeUsedInProtocol(ProtocolType.RDP, ProtocolType.SSH2)]
-        public string EC2InstanceId
-        {
-            get => GetPropertyValue("EC2InstanceId", _ec2InstanceId).Trim();
-            set => SetField(ref _ec2InstanceId, value?.Trim(), "EC2InstanceId");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
-        LocalizedAttributes.LocalizedDisplayName(nameof(Language.EC2Region)),
-        LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionEC2Region)),
-        AttributeUsedInProtocol(ProtocolType.RDP, ProtocolType.SSH2)]
-        public string EC2Region
-        {
-            get => GetPropertyValue("EC2Region", _ec2Region).Trim();
-            set => SetField(ref _ec2Region, value?.Trim(), "EC2Region");
         }
 
         [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
@@ -411,17 +345,6 @@ namespace mRemoteNG.Connection
         }
 
         [LocalizedAttributes.LocalizedCategory(nameof(Language.Protocol), 3),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.RenderingEngine)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionRenderingEngine)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.HTTP, ProtocolType.HTTPS)]
-        public HTTPBase.RenderingEngine RenderingEngine
-        {
-            get => GetPropertyValue("RenderingEngine", _renderingEngine);
-            set => SetField(ref _renderingEngine, value, "RenderingEngine");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Protocol), 3),
          LocalizedAttributes.LocalizedDisplayName(nameof(Language.UseCredSsp)),
          LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionUseCredSsp)),
          TypeConverter(typeof(MiscTools.YesNoTypeConverter)),
@@ -551,17 +474,6 @@ namespace mRemoteNG.Connection
         {
             get => GetPropertyValue("RDGatewayDomain", _rdGatewayDomain).Trim();
             set => SetField(ref _rdGatewayDomain, value?.Trim(), "RDGatewayDomain");
-        }
-        // external credential provider selector for rd gateway
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.RDPGateway), 4),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.ExternalCredentialProvider)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionExternalCredentialProvider)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.RDP)]
-        public ExternalCredentialProvider RDGatewayExternalCredentialProvider
-        {
-            get => GetPropertyValue("RDGatewayExternalCredentialProvider", _rdGatewayExternalCredentialProvider);
-            set => SetField(ref _rdGatewayExternalCredentialProvider, value, "RDGatewayExternalCredentialProvider");
         }
 
         // credential record identifier for external credential provider
@@ -895,138 +807,6 @@ namespace mRemoteNG.Connection
         {
             get => GetPropertyValue("RDPStartProgramWorkDir", _rdpStartProgramWorkDir);
             set => SetField(ref _rdpStartProgramWorkDir, value, "RDPStartProgramWorkDir");
-        }
-
-        #endregion
-
-        #region VNC
-        // TODO: it seems all these VNC properties were added and serialized but
-        // never hooked up to the VNC protocol or shown to the user
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Appearance), 5),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.Compression)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionCompression)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.VNC),
-         Browsable(false)]
-        public ProtocolVNC.Compression VNCCompression
-        {
-            get => GetPropertyValue("VNCCompression", _vncCompression);
-            set => SetField(ref _vncCompression, value, "VNCCompression");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Appearance), 5),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.Encoding)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionEncoding)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.VNC),
-         Browsable(false)]
-        public ProtocolVNC.Encoding VNCEncoding
-        {
-            get => GetPropertyValue("VNCEncoding", _vncEncoding);
-            set => SetField(ref _vncEncoding, value, "VNCEncoding");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Connection), 2),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.AuthenticationMode)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionAuthenticationMode)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.VNC),
-         Browsable(false)]
-        public ProtocolVNC.AuthMode VNCAuthMode
-        {
-            get => GetPropertyValue("VNCAuthMode", _vncAuthMode);
-            set => SetField(ref _vncAuthMode, value, "VNCAuthMode");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Proxy), 7),
-            LocalizedAttributes.LocalizedDisplayName(nameof(Language.ProxyType)),
-            LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionVNCProxyType)),
-            TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-            AttributeUsedInProtocol(ProtocolType.VNC),
-            Browsable(false)]
-        public ProtocolVNC.ProxyType VNCProxyType
-        {
-            get => GetPropertyValue("VNCProxyType", _vncProxyType);
-            set => SetField(ref _vncProxyType, value, "VNCProxyType");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Proxy), 7),
-            LocalizedAttributes.LocalizedDisplayName(nameof(Language.ProxyAddress)),
-            LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionVNCProxyAddress)),
-            AttributeUsedInProtocol(ProtocolType.VNC),
-            Browsable(false)]
-        public string VNCProxyIP
-        {
-            get => GetPropertyValue("VNCProxyIP", _vncProxyIp);
-            set => SetField(ref _vncProxyIp, value, "VNCProxyIP");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Proxy), 7),
-            LocalizedAttributes.LocalizedDisplayName(nameof(Language.ProxyPort)),
-            LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionVNCProxyPort)),
-            AttributeUsedInProtocol(ProtocolType.VNC),
-            Browsable(false)]
-        public int VNCProxyPort
-        {
-            get => GetPropertyValue("VNCProxyPort", _vncProxyPort);
-            set => SetField(ref _vncProxyPort, value, "VNCProxyPort");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Proxy), 7),
-            LocalizedAttributes.LocalizedDisplayName(nameof(Language.ProxyUsername)),
-            LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionVNCProxyUsername)),
-            AttributeUsedInProtocol(ProtocolType.VNC),
-            Browsable(false)]
-        public string VNCProxyUsername
-        {
-            get => GetPropertyValue("VNCProxyUsername", _vncProxyUsername);
-            set => SetField(ref _vncProxyUsername, value, "VNCProxyUsername");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Proxy), 7),
-            LocalizedAttributes.LocalizedDisplayName(nameof(Language.ProxyPassword)),
-            LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionVNCProxyPassword)),
-            PasswordPropertyText(true),
-            AttributeUsedInProtocol(ProtocolType.VNC),
-            Browsable(false)]
-        public string VNCProxyPassword
-        {
-            get => GetPropertyValue("VNCProxyPassword", _vncProxyPassword);
-            set => SetField(ref _vncProxyPassword, value, "VNCProxyPassword");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Appearance), 5),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.Colors)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionColors)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.VNC),
-         Browsable(false)]
-        public ProtocolVNC.Colors VNCColors
-        {
-            get => GetPropertyValue("VNCColors", _vncColors);
-            set => SetField(ref _vncColors, value, "VNCColors");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Appearance), 5),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.SmartSizeMode)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionSmartSizeMode)),
-         TypeConverter(typeof(MiscTools.EnumTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.VNC)]
-        public ProtocolVNC.SmartSizeMode VNCSmartSizeMode
-        {
-            get => GetPropertyValue("VNCSmartSizeMode", _vncSmartSizeMode);
-            set => SetField(ref _vncSmartSizeMode, value, "VNCSmartSizeMode");
-        }
-
-        [LocalizedAttributes.LocalizedCategory(nameof(Language.Appearance), 5),
-         LocalizedAttributes.LocalizedDisplayName(nameof(Language.ViewOnly)),
-         LocalizedAttributes.LocalizedDescription(nameof(Language.PropertyDescriptionViewOnly)),
-         TypeConverter(typeof(MiscTools.YesNoTypeConverter)),
-         AttributeUsedInProtocol(ProtocolType.VNC)]
-        public bool VNCViewOnly
-        {
-            get => GetPropertyValue("VNCViewOnly", _vncViewOnly);
-            set => SetField(ref _vncViewOnly, value, "VNCViewOnly");
         }
 
         #endregion

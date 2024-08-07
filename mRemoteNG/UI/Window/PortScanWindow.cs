@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -317,11 +317,6 @@ namespace mRemoteNG.UI.Window
             return selectedTreeNodeAsContainer;
         }
 
-        private void importVNCToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            importSelectedHosts(ProtocolType.VNC);
-        }
-
         private void importTelnetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             importSelectedHosts(ProtocolType.Telnet);
@@ -340,16 +335,6 @@ namespace mRemoteNG.UI.Window
         private void importRDPToolStripMenuItem_Click(object sender, EventArgs e)
         {
             importSelectedHosts(ProtocolType.RDP);
-        }
-
-        private void importHTTPSToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            importSelectedHosts(ProtocolType.HTTPS);
-        }
-
-        private void importHTTPToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            importSelectedHosts(ProtocolType.HTTP);
         }
 
         private void NgCheckFirstPort_CheckedChanged(object sender, EventArgs e)

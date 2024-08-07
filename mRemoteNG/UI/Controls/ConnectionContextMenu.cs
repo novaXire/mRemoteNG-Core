@@ -626,7 +626,7 @@ namespace mRemoteNG.UI.Controls
             if (connectionInfo.Protocol == ProtocolType.IntApp)
                 _cMenTreeConnectWithOptionsNoCredentials.Enabled = false;
 
-            if (connectionInfo.Protocol != ProtocolType.RDP && connectionInfo.Protocol != ProtocolType.VNC)
+            if (connectionInfo.Protocol != ProtocolType.RDP)
                 _cMenTreeConnectWithOptionsViewOnly.Enabled = false;
 
             _cMenTreeApplyInheritanceToChildren.Enabled = false;
