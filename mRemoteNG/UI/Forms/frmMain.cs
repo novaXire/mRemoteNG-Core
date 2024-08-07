@@ -627,8 +627,7 @@ namespace mRemoteNG.UI.Forms
             if (ifc == null) return;
 
             ifc.Protocol.Focus();
-            Form conFormWindow = ifc.FindForm();
-            ((ConnectionTab)conFormWindow)?.RefreshInterfaceController();
+            Form conFormWindow = ifc.FindForm();            
         }
 
         private void PnlDock_ActiveDocumentChanged(object sender, EventArgs e)

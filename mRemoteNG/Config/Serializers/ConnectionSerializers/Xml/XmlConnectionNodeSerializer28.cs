@@ -77,7 +77,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
             element.Add(new XAttribute("Port", connectionInfo.Port));
             element.Add(new XAttribute("ConnectToConsole", connectionInfo.UseConsoleSession.ToString().ToLowerInvariant()));
             element.Add(new XAttribute("UseCredSsp", connectionInfo.UseCredSsp.ToString().ToLowerInvariant()));
-            element.Add(new XAttribute("RenderingEngine", connectionInfo.RenderingEngine));
             element.Add(new XAttribute("RDPAuthenticationLevel", connectionInfo.RDPAuthenticationLevel));
             element.Add(new XAttribute("RDPMinutesToIdleTimeout", connectionInfo.RDPMinutesToIdleTimeout));
             element.Add(new XAttribute("RDPAlertIdleTimeout", connectionInfo.RDPAlertIdleTimeout.ToString().ToLowerInvariant()));
@@ -113,28 +112,9 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
             element.Add(new XAttribute("ExtApp", connectionInfo.ExtApp));
             element.Add(new XAttribute("StartProgram", connectionInfo.RDPStartProgram));
             element.Add(new XAttribute("StartProgramWorkDir", connectionInfo.RDPStartProgramWorkDir));
-            element.Add(new XAttribute("VNCCompression", connectionInfo.VNCCompression));
-            element.Add(new XAttribute("VNCEncoding", connectionInfo.VNCEncoding));
-            element.Add(new XAttribute("VNCAuthMode", connectionInfo.VNCAuthMode));
-            element.Add(new XAttribute("VNCProxyType", connectionInfo.VNCProxyType));
-            element.Add(new XAttribute("VNCProxyIP", connectionInfo.VNCProxyIP));
-            element.Add(new XAttribute("VNCProxyPort", connectionInfo.VNCProxyPort));
-
-            element.Add(_saveFilter.SaveUsername
-                ? new XAttribute("VNCProxyUsername", connectionInfo.VNCProxyUsername)
-                : new XAttribute("VNCProxyUsername", ""));
-
-            element.Add(_saveFilter.SavePassword
-                ? new XAttribute("VNCProxyPassword", _cryptographyProvider.Encrypt(connectionInfo.VNCProxyPassword, _encryptionKey))
-                : new XAttribute("VNCProxyPassword", ""));
-
-            element.Add(new XAttribute("VNCColors", connectionInfo.VNCColors));
-            element.Add(new XAttribute("VNCSmartSizeMode", connectionInfo.VNCSmartSizeMode));
-            element.Add(new XAttribute("VNCViewOnly", connectionInfo.VNCViewOnly.ToString().ToLowerInvariant()));
             element.Add(new XAttribute("RDGatewayUsageMethod", connectionInfo.RDGatewayUsageMethod));
             element.Add(new XAttribute("RDGatewayHostname", connectionInfo.RDGatewayHostname));
             element.Add(new XAttribute("RDGatewayUseConnectionCredentials", connectionInfo.RDGatewayUseConnectionCredentials));
-            element.Add(new XAttribute("RDGatewayExternalCredentialProvider", connectionInfo.RDGatewayExternalCredentialProvider));
             element.Add(new XAttribute("RDGatewayUserViaAPI", connectionInfo.RDGatewayUserViaAPI));
 
             element.Add(_saveFilter.SaveUsername
@@ -153,10 +133,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
             element.Add(new XAttribute("UseRestrictedAdmin", connectionInfo.UseRestrictedAdmin));
 
             element.Add(new XAttribute("UserViaAPI", connectionInfo.UserViaAPI));
-            element.Add(new XAttribute("EC2InstanceId", connectionInfo.EC2InstanceId));
-            element.Add(new XAttribute("EC2Region", connectionInfo.EC2Region));
-            element.Add(new XAttribute("ExternalCredentialProvider", connectionInfo.ExternalCredentialProvider));
-            element.Add(new XAttribute("ExternalAddressProvider", connectionInfo.ExternalAddressProvider));
         }
 
         private void SetInheritanceAttributes(XContainer element, IInheritable connectionInfo)

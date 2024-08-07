@@ -46,14 +46,6 @@ namespace mRemoteNG.Config.Serializers.MiscSerializers
                     if (host.Telnet)
                         finalProtocol = ProtocolType.Telnet;
                     break;
-                case ProtocolType.HTTP:
-                    if (host.Http)
-                        finalProtocol = ProtocolType.HTTP;
-                    break;
-                case ProtocolType.HTTPS:
-                    if (host.Https)
-                        finalProtocol = ProtocolType.HTTPS;
-                    break;
                 case ProtocolType.Rlogin:
                     if (host.Rlogin)
                         finalProtocol = ProtocolType.Rlogin;
@@ -61,10 +53,6 @@ namespace mRemoteNG.Config.Serializers.MiscSerializers
                 case ProtocolType.RDP:
                     if (host.Rdp)
                         finalProtocol = ProtocolType.RDP;
-                    break;
-                case ProtocolType.VNC:
-                    if (host.Vnc)
-                        finalProtocol = ProtocolType.VNC;
                     break;
                 default:
                     protocolValid = false;

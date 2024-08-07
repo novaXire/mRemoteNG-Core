@@ -1,12 +1,9 @@
-﻿using mRemoteNG.Connection.Protocol.Http;
-using mRemoteNG.Connection.Protocol.RAW;
+﻿using mRemoteNG.Connection.Protocol.RAW;
 using mRemoteNG.Connection.Protocol.RDP;
 using mRemoteNG.Connection.Protocol.Rlogin;
 using mRemoteNG.Connection.Protocol.SSH;
 using mRemoteNG.Connection.Protocol.Telnet;
-using mRemoteNG.Connection.Protocol.VNC;
 using System;
-using mRemoteNG.Connection.Protocol.PowerShell;
 using mRemoteNG.Resources.Language;
 using System.Runtime.Versioning;
 
@@ -26,8 +23,6 @@ namespace mRemoteNG.Connection.Protocol
                     RdpProtocol rdp = _rdpProtocolFactory.Build(connectionInfo.RdpVersion);
                     rdp.LoadBalanceInfoUseUtf8 = Properties.OptionsAdvancedPage.Default.RdpLoadBalanceInfoUseUtf8;
                     return rdp;
-                case ProtocolType.VNC:
-                    return new ProtocolVNC();
                 case ProtocolType.SSH1:
                     return new ProtocolSSH1();
                 case ProtocolType.SSH2:
@@ -38,12 +33,6 @@ namespace mRemoteNG.Connection.Protocol
                     return new ProtocolRlogin();
                 case ProtocolType.RAW:
                     return new RawProtocol();
-                case ProtocolType.HTTP:
-                    return new ProtocolHTTP(connectionInfo.RenderingEngine);
-                case ProtocolType.HTTPS:
-                    return new ProtocolHTTPS(connectionInfo.RenderingEngine);
-                case ProtocolType.PowerShell:
-                    return new ProtocolPowerShell(connectionInfo);
                 case ProtocolType.IntApp:
                     if (connectionInfo.ExtApp == "")
                     {

@@ -310,13 +310,9 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Sql
             isFieldNotChange = isFieldNotChange && dataRow["DisableMenuAnimations"].Equals(connectionInfo.DisableMenuAnimations);
             isFieldNotChange = isFieldNotChange && dataRow["DisplayThemes"].Equals(connectionInfo.DisplayThemes);
             isFieldNotChange = isFieldNotChange && dataRow["DisplayWallpaper"].Equals(connectionInfo.DisplayWallpaper);
-            isFieldNotChange = isFieldNotChange && dataRow["EC2InstanceId"].Equals(connectionInfo.EC2InstanceId);
-            isFieldNotChange = isFieldNotChange && dataRow["EC2Region"].Equals(connectionInfo.EC2Region);
             isFieldNotChange = isFieldNotChange && dataRow["EnableDesktopComposition"].Equals(connectionInfo.EnableDesktopComposition);
             isFieldNotChange = isFieldNotChange && dataRow["EnableFontSmoothing"].Equals(connectionInfo.EnableFontSmoothing);
             isFieldNotChange = isFieldNotChange && dataRow["ExtApp"].Equals(connectionInfo.ExtApp);
-            isFieldNotChange = isFieldNotChange && dataRow["ExternalAddressProvider"].Equals(connectionInfo.ExternalAddressProvider);
-            isFieldNotChange = isFieldNotChange && dataRow["ExternalCredentialProvider"].Equals(connectionInfo.ExternalCredentialProvider);
             isFieldNotChange = isFieldNotChange && dataRow["Hostname"].Equals(connectionInfo.Hostname);
             isFieldNotChange = isFieldNotChange && dataRow["LoadBalanceInfo"].Equals(connectionInfo.LoadBalanceInfo);
             isFieldNotChange = isFieldNotChange && dataRow["MacAddress"].Equals(connectionInfo.MacAddress);
@@ -327,7 +323,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Sql
             isFieldNotChange = isFieldNotChange && dataRow["Protocol"].Equals(connectionInfo.Protocol.ToString());
             isFieldNotChange = isFieldNotChange && dataRow["PuttySession"].Equals(connectionInfo.PuttySession);
             isFieldNotChange = isFieldNotChange && dataRow["RDGatewayDomain"].Equals(connectionInfo.RDGatewayDomain);
-            isFieldNotChange = isFieldNotChange && dataRow["RDGatewayExternalCredentialProvider"].Equals(connectionInfo.RDGatewayExternalCredentialProvider);
             isFieldNotChange = isFieldNotChange && dataRow["RDGatewayHostname"].Equals(connectionInfo.RDGatewayHostname);
             isFieldNotChange = isFieldNotChange && dataRow["RDGatewayUsageMethod"].Equals(connectionInfo.RDGatewayUsageMethod.ToString());
             isFieldNotChange = isFieldNotChange && dataRow["RDGatewayUseConnectionCredentials"].Equals(connectionInfo.RDGatewayUseConnectionCredentials.ToString());
@@ -346,7 +341,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Sql
             isFieldNotChange = isFieldNotChange && dataRow["RedirectPrinters"].Equals(connectionInfo.RedirectPrinters);
             isFieldNotChange = isFieldNotChange && dataRow["RedirectSmartCards"].Equals(connectionInfo.RedirectSmartCards);
             isFieldNotChange = isFieldNotChange && dataRow["RedirectSound"].Equals(connectionInfo.RedirectSound.ToString());
-            isFieldNotChange = isFieldNotChange && dataRow["RenderingEngine"].Equals(connectionInfo.RenderingEngine.ToString());
             isFieldNotChange = isFieldNotChange && dataRow["Resolution"].Equals(connectionInfo.Resolution.ToString());
             isFieldNotChange = isFieldNotChange && dataRow["SoundQuality"].Equals(connectionInfo.SoundQuality.ToString());
             isFieldNotChange = isFieldNotChange && dataRow["StartProgram"].Equals(connectionInfo.RDPStartProgram);
@@ -358,16 +352,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Sql
             isFieldNotChange = isFieldNotChange && dataRow["UseVmId"].Equals(connectionInfo.UseVmId);
             isFieldNotChange = isFieldNotChange && dataRow["UserField"].Equals(connectionInfo.UserField);
             isFieldNotChange = isFieldNotChange && dataRow["UserViaAPI"].Equals(connectionInfo.UserViaAPI);
-            isFieldNotChange = isFieldNotChange && dataRow["VNCAuthMode"].Equals(connectionInfo.VNCAuthMode.ToString());
-            isFieldNotChange = isFieldNotChange && dataRow["VNCColors"].Equals(connectionInfo.VNCColors.ToString());
-            isFieldNotChange = isFieldNotChange && dataRow["VNCCompression"].Equals(connectionInfo.VNCCompression.ToString());
-            isFieldNotChange = isFieldNotChange && dataRow["VNCEncoding"].Equals(connectionInfo.VNCEncoding.ToString());
-            isFieldNotChange = isFieldNotChange && dataRow["VNCProxyIP"].Equals(connectionInfo.VNCProxyIP);
-            isFieldNotChange = isFieldNotChange && dataRow["VNCProxyPort"].Equals(connectionInfo.VNCProxyPort);
-            isFieldNotChange = isFieldNotChange && dataRow["VNCProxyType"].Equals(connectionInfo.VNCProxyType.ToString());
-            isFieldNotChange = isFieldNotChange && dataRow["VNCProxyUsername"].Equals(connectionInfo.VNCProxyUsername);
-            isFieldNotChange = isFieldNotChange && dataRow["VNCSmartSizeMode"].Equals(connectionInfo.VNCSmartSizeMode.ToString());
-            isFieldNotChange = isFieldNotChange && dataRow["VNCViewOnly"].Equals(connectionInfo.VNCViewOnly);
             isFieldNotChange = isFieldNotChange && dataRow["VmId"].Equals(connectionInfo.VmId);
 
             bool isInheritanceFieldNotChange = false;
@@ -505,22 +489,10 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Sql
                     dataRow["InheritUseRestrictedAdmin"].Equals(false) &&
                     dataRow["InheritUserField"].Equals(false) &&
                     dataRow["InheritUsername"].Equals(false) &&
-                    dataRow["InheritUserViaAPI"].Equals(false) &&
-                    dataRow["InheritVNCAuthMode"].Equals(false) &&
-                    dataRow["InheritVNCColors"].Equals(false) &&
-                    dataRow["InheritVNCCompression"].Equals(false) &&
-                    dataRow["InheritVNCEncoding"].Equals(false) &&
-                    dataRow["InheritVNCProxyIP"].Equals(false) &&
-                    dataRow["InheritVNCProxyPassword"].Equals(false) &&
-                    dataRow["InheritVNCProxyPort"].Equals(false) &&
-                    dataRow["InheritVNCProxyType"].Equals(false) &&
-                    dataRow["InheritVNCProxyUsername"].Equals(false) &&
-                    dataRow["InheritVNCSmartSizeMode"].Equals(false) &&
-                    dataRow["InheritVNCViewOnly"].Equals(false);
+                    dataRow["InheritUserViaAPI"].Equals(false);
             }
 
-            bool pwd = dataRow["Password"].Equals(_saveFilter.SavePassword ? _cryptographyProvider.Encrypt(connectionInfo.Password?.ConvertToUnsecureString(), _encryptionKey) : "") &&
-                      dataRow["VNCProxyPassword"].Equals(_cryptographyProvider.Encrypt(connectionInfo.VNCProxyPassword, _encryptionKey)) &&
+            bool pwd = dataRow["Password"].Equals(_saveFilter.SavePassword ? _cryptographyProvider.Encrypt(connectionInfo.Password?.ConvertToUnsecureString(), _encryptionKey) : "") &&                      
                       dataRow["RDGatewayPassword"].Equals(_cryptographyProvider.Encrypt(connectionInfo.RDGatewayPassword, _encryptionKey));
             return !(pwd && isFieldNotChange && isInheritanceFieldNotChange);
         }
@@ -601,7 +573,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Sql
             dataRow["RedirectPrinters"] = connectionInfo.RedirectPrinters;
             dataRow["RedirectSmartCards"] = connectionInfo.RedirectSmartCards;
             dataRow["RedirectSound"] = connectionInfo.RedirectSound;
-            dataRow["RenderingEngine"] = connectionInfo.RenderingEngine;
             dataRow["Resolution"] = connectionInfo.Resolution;
             dataRow["SSHOptions"] = connectionInfo.SSHOptions;
             dataRow["SSHTunnelConnectionName"] = connectionInfo.SSHTunnelConnectionName;
@@ -615,18 +586,7 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Sql
             dataRow["UseRestrictedAdmin"] = connectionInfo.UseRestrictedAdmin;
             dataRow["UseVmId"] = connectionInfo.UseVmId;
             dataRow["UserField"] = connectionInfo.UserField;
-            dataRow["Username"] = _saveFilter.SaveUsername ? connectionInfo.Username : "";
-            dataRow["VNCAuthMode"] = connectionInfo.VNCAuthMode;
-            dataRow["VNCColors"] = connectionInfo.VNCColors;
-            dataRow["VNCCompression"] = connectionInfo.VNCCompression;
-            dataRow["VNCEncoding"] = connectionInfo.VNCEncoding;
-            dataRow["VNCProxyIP"] = connectionInfo.VNCProxyIP;
-            dataRow["VNCProxyPassword"] = _cryptographyProvider.Encrypt(connectionInfo.VNCProxyPassword, _encryptionKey);
-            dataRow["VNCProxyPort"] = connectionInfo.VNCProxyPort;
-            dataRow["VNCProxyType"] = connectionInfo.VNCProxyType;
-            dataRow["VNCProxyUsername"] = connectionInfo.VNCProxyUsername;
-            dataRow["VNCSmartSizeMode"] = connectionInfo.VNCSmartSizeMode;
-            dataRow["VNCViewOnly"] = connectionInfo.VNCViewOnly; // TODO: this column can eventually be removed. we now save this property locally
+            dataRow["Username"] = _saveFilter.SaveUsername ? connectionInfo.Username : "";            
             dataRow["VmId"] = connectionInfo.VmId;
             dataRow["UserViaAPI"] = connectionInfo.UserViaAPI;
 

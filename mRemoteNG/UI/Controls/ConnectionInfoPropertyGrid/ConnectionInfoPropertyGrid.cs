@@ -9,7 +9,6 @@ using mRemoteNG.App;
 using mRemoteNG.Connection;
 using mRemoteNG.Connection.Protocol;
 using mRemoteNG.Connection.Protocol.RDP;
-using mRemoteNG.Connection.Protocol.VNC;
 using mRemoteNG.Messages;
 using mRemoteNG.Properties;
 using mRemoteNG.Security;
@@ -157,18 +156,11 @@ namespace mRemoteNG.UI.Controls.ConnectionInfoPropertyGrid
                     // hide any inherited properties
                     strHide.AddRange(SelectedConnectionInfo.Inheritance.GetEnabledInheritanceProperties());
 
-                    // hide external provider fields
-                    strHide.AddRange(SpecialExternalAddressProviderExclusions());
-                    strHide.AddRange(SpecialExternalCredentialProviderExclusions());
-
                     // ReSharper disable once SwitchStatementMissingSomeCases
                     switch (SelectedConnectionInfo.Protocol)
                     {
                         case ProtocolType.RDP:
                             strHide.AddRange(SpecialRdpExclusions());
-                            break;
-                        case ProtocolType.VNC:
-                            strHide.AddRange(SpecialVncExclusions());
                             break;
                     }
 
@@ -217,41 +209,6 @@ namespace mRemoteNG.UI.Controls.ConnectionInfoPropertyGrid
                     .Contains(protocol) != false);
         }
 
-        private List<string> SpecialExternalAddressProviderExclusions()
-        {
-            List<string> strHide = new();
-
-            // aws
-            if (SelectedConnectionInfo.ExternalAddressProvider != ExternalAddressProvider.AmazonWebServices)
-            {
-                strHide.Add(nameof(AbstractConnectionRecord.EC2InstanceId));
-                strHide.Add(nameof(AbstractConnectionRecord.EC2Region));
-            }
-            return strHide;
-        }
-
-        private List<string> SpecialExternalCredentialProviderExclusions()
-        {
-            List<string> strHide = new();
-
-            if (SelectedConnectionInfo.ExternalCredentialProvider == ExternalCredentialProvider.None)
-            {
-                strHide.Add(nameof(AbstractConnectionRecord.UserViaAPI));
-            }
-            else if (SelectedConnectionInfo.ExternalCredentialProvider == ExternalCredentialProvider.DelineaSecretServer
-                || SelectedConnectionInfo.ExternalCredentialProvider == ExternalCredentialProvider.ClickstudiosPasswordState)
-            {
-                strHide.Add(nameof(AbstractConnectionRecord.Username));
-                strHide.Add(nameof(AbstractConnectionRecord.Password));
-                strHide.Add(nameof(AbstractConnectionRecord.Domain));
-            }
-
-            return strHide;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         private List<string> SpecialRdpExclusions()
         {
             List<string> strHide = new();
@@ -275,8 +232,7 @@ namespace mRemoteNG.UI.Controls.ConnectionInfoPropertyGrid
             {
                 strHide.Add(nameof(AbstractConnectionRecord.RDGatewayDomain));
                 strHide.Add(nameof(AbstractConnectionRecord.RDGatewayPassword));
-                strHide.Add(nameof(AbstractConnectionRecord.RDGatewayUsername));
-                strHide.Add(nameof(AbstractConnectionRecord.RDGatewayExternalCredentialProvider));
+                strHide.Add(nameof(AbstractConnectionRecord.RDGatewayUsername));                
                 strHide.Add(nameof(AbstractConnectionRecord.RDGatewayUserViaAPI));
                 strHide.Add(nameof(AbstractConnectionRecord.RDGatewayAccessToken));
             }
@@ -291,8 +247,7 @@ namespace mRemoteNG.UI.Controls.ConnectionInfoPropertyGrid
             {
                 strHide.Add(nameof(AbstractConnectionRecord.RDGatewayDomain));
                 strHide.Add(nameof(AbstractConnectionRecord.RDGatewayPassword));
-                strHide.Add(nameof(AbstractConnectionRecord.RDGatewayUsername));
-                strHide.Add(nameof(AbstractConnectionRecord.RDGatewayExternalCredentialProvider));
+                strHide.Add(nameof(AbstractConnectionRecord.RDGatewayUsername));                
                 strHide.Add(nameof(AbstractConnectionRecord.RDGatewayUserViaAPI));
             }
 
@@ -319,27 +274,7 @@ namespace mRemoteNG.UI.Controls.ConnectionInfoPropertyGrid
             }
 
             return strHide;
-        }
-
-        private List<string> SpecialVncExclusions()
-        {
-            List<string> strHide = new();
-            if (SelectedConnectionInfo.VNCAuthMode == ProtocolVNC.AuthMode.AuthVNC)
-            {
-                strHide.Add(nameof(AbstractConnectionRecord.Username));
-                strHide.Add(nameof(AbstractConnectionRecord.Domain));
-            }
-
-            if (SelectedConnectionInfo.VNCProxyType == ProtocolVNC.ProxyType.ProxyNone)
-            {
-                strHide.Add(nameof(AbstractConnectionRecord.VNCProxyIP));
-                strHide.Add(nameof(AbstractConnectionRecord.VNCProxyPassword));
-                strHide.Add(nameof(AbstractConnectionRecord.VNCProxyPort));
-                strHide.Add(nameof(AbstractConnectionRecord.VNCProxyUsername));
-            }
-
-            return strHide;
-        }
+        }     
 
         private void UpdateConnectionInfoNode(PropertyValueChangedEventArgs e)
         {

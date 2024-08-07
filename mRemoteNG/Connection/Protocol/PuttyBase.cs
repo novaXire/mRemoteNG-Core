@@ -104,53 +104,7 @@ namespace mRemoteNG.Connection.Protocol
                         string username = InterfaceControl.Info?.Username ?? "";
                         string password = InterfaceControl.Info?.Password.ConvertToUnsecureString() ?? "";
                         string domain = InterfaceControl.Info?.Domain ?? "";
-                        string UserViaAPI = InterfaceControl.Info?.UserViaAPI ?? "";
-                        string privatekey = "";
-
-                        // access secret server api if necessary
-                        if (InterfaceControl.Info.ExternalCredentialProvider == ExternalCredentialProvider.DelineaSecretServer)
-                        {
-                            try
-                            {
-                                ExternalConnectors.DSS.SecretServerInterface.FetchSecretFromServer($"{UserViaAPI}", out username, out password, out domain, out privatekey);
-
-                                if (!string.IsNullOrEmpty(privatekey))
-                                {
-                                    optionalTemporaryPrivateKeyPath = Path.GetTempFileName();
-                                    File.WriteAllText(optionalTemporaryPrivateKeyPath, privatekey);
-                                    FileInfo fileInfo = new(optionalTemporaryPrivateKeyPath)
-                                    {
-                                        Attributes = FileAttributes.Temporary
-                                    };
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Event_ErrorOccured(this, "Secret Server Interface Error: " + ex.Message, 0);
-                            }
-                        }
-                        else if (InterfaceControl.Info.ExternalCredentialProvider == ExternalCredentialProvider.ClickstudiosPasswordState)
-                        {
-                            try
-                            {
-                                ExternalConnectors.CPS.PasswordstateInterface.FetchSecretFromServer($"{UserViaAPI}", out username, out password, out domain, out privatekey);
-
-                                if (!string.IsNullOrEmpty(privatekey))
-                                {
-                                    optionalTemporaryPrivateKeyPath = Path.GetTempFileName();
-                                    File.WriteAllText(optionalTemporaryPrivateKeyPath, privatekey);
-                                    FileInfo fileInfo = new(optionalTemporaryPrivateKeyPath)
-                                    {
-                                        Attributes = FileAttributes.Temporary
-                                    };
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Event_ErrorOccured(this, "Passwordstate Interface Error: " + ex.Message, 0);
-                            }
-                        }
-
+                        string UserViaAPI = InterfaceControl.Info?.UserViaAPI ?? "";                        
 
                         if (string.IsNullOrEmpty(username))
                         {
@@ -159,25 +113,9 @@ namespace mRemoteNG.Connection.Protocol
                                 case "windows":
                                     username = Environment.UserName;
                                     break;
-                                case "custom" when !string.IsNullOrEmpty(Properties.OptionsCredentialsPage.Default.DefaultUsername):
-                                    username = Properties.OptionsCredentialsPage.Default.DefaultUsername;
-                                    break;
                                 case "custom":
-
-                                    if (Properties.OptionsCredentialsPage.Default.ExternalCredentialProviderDefault == ExternalCredentialProvider.DelineaSecretServer)
-                                    {
-                                        try
-                                        {
-                                            ExternalConnectors.DSS.SecretServerInterface.FetchSecretFromServer(
-                                                $"{Properties.OptionsCredentialsPage.Default.UserViaAPIDefault}", out username, out password, out domain, out privatekey);
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Event_ErrorOccured(this, "Secret Server Interface Error: " + ex.Message, 0);
-                                        }
-                                    }
-
-                                    break;
+                                    username = Properties.OptionsCredentialsPage.Default.DefaultUsername;
+                                    break;                                
                             }
                         }
 

@@ -65,21 +65,6 @@ namespace mRemoteNG.Properties
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public ExternalCredentialProvider ExternalCredentialProviderDefault
-        {
-            get
-            {
-                return ((ExternalCredentialProvider)(this["ExternalCredentialProviderDefault"]));
-            }
-            set
-            {
-                this["ExternalCredentialProviderDefault"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string UserViaAPIDefault {
             get {
                 return ((string)(this["UserViaAPIDefault"]));
