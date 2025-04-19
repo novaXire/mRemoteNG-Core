@@ -4,7 +4,6 @@ using System.Runtime.Versioning;
 using System.Text;
 using mRemoteNG.Connection;
 using mRemoteNG.Container;
-using mRemoteNG.Credential;
 using mRemoteNG.Security;
 using mRemoteNG.Tools;
 using mRemoteNG.Tree;
@@ -16,18 +15,14 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
     public class CsvConnectionsSerializerMremotengFormat : ISerializer<ConnectionInfo, string>
     {
         private readonly SaveFilter _saveFilter;
-        private readonly ICredentialRepositoryList _credentialRepositoryList;
 
         public Version Version { get; } = new Version(2, 8);
 
-        public CsvConnectionsSerializerMremotengFormat(SaveFilter saveFilter,
-                                                       ICredentialRepositoryList credentialRepositoryList)
+        public CsvConnectionsSerializerMremotengFormat(SaveFilter saveFilter)
         {
             saveFilter.ThrowIfNull(nameof(saveFilter));
-            credentialRepositoryList.ThrowIfNull(nameof(credentialRepositoryList));
 
             _saveFilter = saveFilter;
-            _credentialRepositoryList = credentialRepositoryList;
         }
 
         public string Serialize(ConnectionTreeModel connectionTreeModel)

@@ -77,7 +77,6 @@ namespace mRemoteNG.UI.Window
             // event handlers for all context menu items...
             cmenTabFullscreen.Click += (sender, args) => ToggleFullscreen();
             cmenTabSmartSize.Click += (sender, args) => ToggleSmartSize();
-            cmenTabTransferFile.Click += (sender, args) => TransferFile();
             cmenTabRenameTab.Click += (sender, args) => RenameTab();
             cmenTabDuplicateTab.Click += (sender, args) => DuplicateTab();
             cmenTabReconnect.Click += (sender, args) => Reconnect();
@@ -258,7 +257,6 @@ namespace mRemoteNG.UI.Window
         {
             cmenTabFullscreen.Text = Language.Fullscreen;
             cmenTabSmartSize.Text = Language.SmartSize;
-            cmenTabTransferFile.Text = Language.TransferFile;
             cmenTabSendSpecialKeysCtrlAltDel.Text = Language.CtrlAltDel;
             cmenTabSendSpecialKeysCtrlEsc.Text = Language.CtrlEsc;
             cmenTabExternalApps.Text = Language._Tools;
@@ -363,14 +361,6 @@ namespace mRemoteNG.UI.Window
                     cmenTabSmartSize.Visible = false;
                 }
               
-                cmenTabTransferFile.Visible = false;                
-
-                if (interfaceControl.Info.Protocol == ProtocolType.SSH1 |
-                    interfaceControl.Info.Protocol == ProtocolType.SSH2)
-                {
-                    cmenTabTransferFile.Visible = true;
-                }
-
                 cmenTabPuttySettings.Visible = interfaceControl.Protocol is PuttyBase;
 
                 AddExternalApps();
@@ -401,44 +391,6 @@ namespace mRemoteNG.UI.Window
             catch (Exception ex)
             {
                 Runtime.MessageCollector.AddExceptionMessage("ToggleSmartSize (UI.Window.ConnectionWindow) failed", ex);
-            }
-        }
-
-        private void TransferFile()
-        {
-            try
-            {
-                InterfaceControl interfaceControl = GetInterfaceControl();
-                if (interfaceControl == null) return;
-
-                if (interfaceControl.Info.Protocol == ProtocolType.SSH1 |
-                    interfaceControl.Info.Protocol == ProtocolType.SSH2)
-                    SshTransferFile();
-            }
-            catch (Exception ex)
-            {
-                Runtime.MessageCollector.AddExceptionMessage("TransferFile (UI.Window.ConnectionWindow) failed", ex);
-            }
-        }
-
-        private void SshTransferFile()
-        {
-            try
-            {
-                InterfaceControl interfaceControl = GetInterfaceControl();
-                if (interfaceControl == null) return;
-
-                WindowsUI.Show(WindowType.SSHTransfer);
-                ConnectionInfo connectionInfo = interfaceControl.Info;
-
-                WindowsUI.SshtransferForm.Hostname = connectionInfo.Hostname;
-                WindowsUI.SshtransferForm.Username = connectionInfo.Username;
-                WindowsUI.SshtransferForm.Password = connectionInfo.Password.ConvertToUnsecureString();
-                WindowsUI.SshtransferForm.Port = Convert.ToString(connectionInfo.Port);
-            }
-            catch (Exception ex)
-            {
-                Runtime.MessageCollector.AddExceptionMessage("SSHTransferFile (UI.Window.ConnectionWindow) failed", ex);
             }
         }
 

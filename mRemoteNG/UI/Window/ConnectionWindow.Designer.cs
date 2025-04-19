@@ -9,7 +9,6 @@ namespace mRemoteNG.UI.Window
     {
         internal ContextMenuStrip cmenTab;
         private ToolStripMenuItem cmenTabFullscreen;
-        private ToolStripMenuItem cmenTabTransferFile;
         private ToolStripSeparator cmenTabSep1;
         private ToolStripSeparator cmenTabSep2;
         private ToolStripMenuItem cmenTabRenameTab;
@@ -39,8 +38,7 @@ namespace mRemoteNG.UI.Window
             this.cmenTabDuplicateTab = new System.Windows.Forms.ToolStripMenuItem();
             this.cmenTabSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.cmenTabFullscreen = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmenTabSmartSize = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmenTabTransferFile = new System.Windows.Forms.ToolStripMenuItem();            
+            this.cmenTabSmartSize = new System.Windows.Forms.ToolStripMenuItem();      
             this.cmenTabSendSpecialKeysCtrlAltDel = new System.Windows.Forms.ToolStripMenuItem();
             this.cmenTabSendSpecialKeysCtrlEsc = new System.Windows.Forms.ToolStripMenuItem();
             this.cmenTabSep2 = new System.Windows.Forms.ToolStripSeparator();
@@ -71,8 +69,7 @@ namespace mRemoteNG.UI.Window
             this.cmenTabDuplicateTab,
             this.cmenTabSep1,
             this.cmenTabFullscreen,
-            this.cmenTabSmartSize,
-            this.cmenTabTransferFile,            
+            this.cmenTabSmartSize,        
             this.cmenTabSep2,
             this.cmenTabPuttySettings,
             this.cmenTabExternalApps});
@@ -140,13 +137,6 @@ namespace mRemoteNG.UI.Window
             this.cmenTabSmartSize.Name = "cmenTabSmartSize";
             this.cmenTabSmartSize.Size = new System.Drawing.Size(230, 22);
             this.cmenTabSmartSize.Text = "SmartSize (RDP)";
-            // 
-            // cmenTabTransferFile
-            // 
-            this.cmenTabTransferFile.Image = global::mRemoteNG.Properties.Resources.SyncArrow_16x;
-            this.cmenTabTransferFile.Name = "cmenTabTransferFile";
-            this.cmenTabTransferFile.Size = new System.Drawing.Size(230, 22);
-            this.cmenTabTransferFile.Text = "Transfer File (SSH)";
             // 
             // cmenTabSendSpecialKeysCtrlAltDel
             // 
