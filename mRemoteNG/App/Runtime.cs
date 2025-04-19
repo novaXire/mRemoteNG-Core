@@ -1,8 +1,6 @@
 ﻿using mRemoteNG.App.Info;
 using mRemoteNG.Config.Putty;
 using mRemoteNG.Connection;
-using mRemoteNG.Credential;
-using mRemoteNG.Credential.Repositories;
 using mRemoteNG.Messages;
 using mRemoteNG.Security;
 using mRemoteNG.Tools;
@@ -15,7 +13,6 @@ using System.IO;
 using System.Security;
 using System.Threading;
 using System.Windows.Forms;
-using mRemoteNG.Properties;
 using mRemoteNG.Resources.Language;
 using System.Runtime.Versioning;
 
@@ -47,8 +44,6 @@ namespace mRemoteNG.App
         public static ExternalToolsService ExternalToolsService { get; } = new ExternalToolsService();
 
         public static SecureString EncryptionKey { get; set; } = new RootNodeInfo(RootNodeType.Connection).PasswordString.ConvertToSecureString();
-
-        public static ICredentialRepositoryList CredentialProviderCatalog { get; } = new CredentialRepositoryList();
 
         public static ConnectionInitiator ConnectionInitiator { get; set; } = new ConnectionInitiator();
 

@@ -108,42 +108,7 @@ namespace mRemoteNG.App
 		        }
 	        }
 		}
-
-        public static void ImportFromActiveDirectory(string ldapPath,
-                                                     ContainerInfo importDestinationContainer,
-                                                     bool importSubOu)
-        {
-            try
-            {
-	            using (Runtime.ConnectionsService.BatchedSavingContext())
-	            {
-					ActiveDirectoryImporter.Import(ldapPath, importDestinationContainer, importSubOu);
-	            }
-            }
-            catch (Exception ex)
-            {
-                Runtime.MessageCollector.AddExceptionMessage("App.Import.ImportFromActiveDirectory() failed.", ex);
-            }
-        }
-
-        public static void ImportFromPortScan(IEnumerable<ScanHost> hosts,
-                                              ProtocolType protocol,
-                                              ContainerInfo importDestinationContainer)
-        {
-            try
-            {
-	            using (Runtime.ConnectionsService.BatchedSavingContext())
-	            {
-                    PortScanImporter importer = new(protocol);
-					importer.Import(hosts, importDestinationContainer);
-	            }
-            }
-            catch (Exception ex)
-            {
-                Runtime.MessageCollector.AddExceptionMessage("App.Import.ImportFromPortScan() failed.", ex);
-            }
-        }
-
+     
         internal static void ImportFromPutty(ContainerInfo selectedNodeAsContainer)
         {
             try
