@@ -33,7 +33,6 @@ namespace mRemoteNG.UI.Controls
         private ToolStripMenuItem _cMenTreeConnectWithOptionsViewOnly;
         private ToolStripMenuItem _cMenTreeDisconnect;
         private ToolStripSeparator _cMenTreeSep2;
-        private ToolStripMenuItem _cMenTreeToolsTransferFile;
         private ToolStripMenuItem _cMenTreeToolsSort;
         private ToolStripMenuItem _cMenTreeToolsSortAscending;
         private ToolStripMenuItem _cMenTreeToolsSortDescending;
@@ -54,8 +53,6 @@ namespace mRemoteNG.UI.Controls
         private ToolStripSeparator _toolStripSeparator1;
         private ToolStripMenuItem _cMenTreeImportFile;
         private ToolStripMenuItem _cMenTreeImportFromRemoteDesktopManager;
-        private ToolStripMenuItem _cMenTreeImportActiveDirectory;
-        private ToolStripMenuItem _cMenTreeImportPortScan;
         private ToolStripMenuItem _cMenTreeImportPutty;
         private ToolStripMenuItem _cMenTreeApplyInheritanceToChildren;
         private ToolStripMenuItem _cMenTreeApplyDefaultInheritance;
@@ -94,7 +91,6 @@ namespace mRemoteNG.UI.Controls
             _cMenTreeDisconnect = new ToolStripMenuItem();
             _cMenTreeSep1 = new ToolStripSeparator();
             _cMenTreeToolsExternalApps = new ToolStripMenuItem();
-            _cMenTreeToolsTransferFile = new ToolStripMenuItem();
             _cMenTreeSep2 = new ToolStripSeparator();
             _cMenTreeDuplicate = new ToolStripMenuItem();
             _cMenTreeRename = new ToolStripMenuItem();
@@ -104,8 +100,6 @@ namespace mRemoteNG.UI.Controls
             _cMenTreeImport = new ToolStripMenuItem();
             _cMenTreeImportFile = new ToolStripMenuItem();
             _cMenTreeImportFromRemoteDesktopManager = new ToolStripMenuItem();
-            _cMenTreeImportActiveDirectory = new ToolStripMenuItem();
-            _cMenTreeImportPortScan = new ToolStripMenuItem();
             _cMenTreeImportPutty = new ToolStripMenuItem();
             _cMenInheritanceSubMenu = new ToolStripMenuItem();
             _cMenTreeApplyInheritanceToChildren = new ToolStripMenuItem();
@@ -134,7 +128,6 @@ namespace mRemoteNG.UI.Controls
                 _cMenTreeDisconnect,
                 _cMenTreeSep1,
                 _cMenTreeToolsExternalApps,
-                _cMenTreeToolsTransferFile,
                 _cMenTreeSep2,
                 _cMenTreeDuplicate,
                 _cMenTreeRename,
@@ -250,14 +243,6 @@ namespace mRemoteNG.UI.Controls
             _cMenTreeToolsExternalApps.Size = new System.Drawing.Size(199, 22);
             _cMenTreeToolsExternalApps.Text = "External Applications";
             //
-            // cMenTreeToolsTransferFile
-            //
-            _cMenTreeToolsTransferFile.Image = Properties.Resources.SyncArrow_16x;
-            _cMenTreeToolsTransferFile.Name = "_cMenTreeToolsTransferFile";
-            _cMenTreeToolsTransferFile.Size = new System.Drawing.Size(199, 22);
-            _cMenTreeToolsTransferFile.Text = "Transfer File (SSH)";
-            _cMenTreeToolsTransferFile.Click += OnTransferFileClicked;
-            //
             // cMenTreeSep2
             //
             _cMenTreeSep2.Name = "_cMenTreeSep2";
@@ -305,9 +290,7 @@ namespace mRemoteNG.UI.Controls
             {
                 _cMenTreeImportFile,
                 _cMenTreeImportFromRemoteDesktopManager,
-                _cMenTreeImportActiveDirectory,
                 _cMenTreeImportPutty,
-                _cMenTreeImportPortScan
             });
             _cMenTreeImport.Name = "_cMenTreeImport";
             _cMenTreeImport.Size = new System.Drawing.Size(199, 22);
@@ -325,20 +308,6 @@ namespace mRemoteNG.UI.Controls
             _cMenTreeImportFromRemoteDesktopManager.Size = new System.Drawing.Size(226, 22);
             _cMenTreeImportFromRemoteDesktopManager.Text = "Import from &Remote Desktop Manager";
             _cMenTreeImportFromRemoteDesktopManager.Click += OnImportRemoteDesktopManagerClicked;
-            //
-            // cMenTreeImportActiveDirectory
-            //
-            _cMenTreeImportActiveDirectory.Name = "_cMenTreeImportActiveDirectory";
-            _cMenTreeImportActiveDirectory.Size = new System.Drawing.Size(226, 22);
-            _cMenTreeImportActiveDirectory.Text = "Import from &Active Directory...";
-            _cMenTreeImportActiveDirectory.Click += OnImportActiveDirectoryClicked;
-            //
-            // cMenTreeImportPortScan
-            //
-            _cMenTreeImportPortScan.Name = "_cMenTreeImportPortScan";
-            _cMenTreeImportPortScan.Size = new System.Drawing.Size(226, 22);
-            _cMenTreeImportPortScan.Text = "Import from &Port Scan...";
-            _cMenTreeImportPortScan.Click += OnImportPortScanClicked;
             //
             // cMenTreeImportPutty
             //
@@ -463,7 +432,6 @@ namespace mRemoteNG.UI.Controls
             _cMenTreeDisconnect.Text = Language.Disconnect;
 
             _cMenTreeToolsExternalApps.Text = Language._Tools;
-            _cMenTreeToolsTransferFile.Text = Language.TransferFile;
 
             _cMenTreeDuplicate.Text = Language.Duplicate;
             _cMenTreeRename.Text = Language.Rename;
@@ -472,8 +440,6 @@ namespace mRemoteNG.UI.Controls
 
             _cMenTreeImport.Text = Language._Import;
             _cMenTreeImportFile.Text = Language.ImportFromFile;
-            _cMenTreeImportActiveDirectory.Text = Language.ImportAD;
-            _cMenTreeImportPortScan.Text = Language.ImportPortScan;
             _cMenTreeExportFile.Text = Language._ExportToFile;
 
             _cMenTreeAddConnection.Text = Language.NewConnection;
@@ -535,7 +501,6 @@ namespace mRemoteNG.UI.Controls
             _cMenTreeConnect.Enabled = false;
             _cMenTreeConnectWithOptions.Enabled = false;
             _cMenTreeDisconnect.Enabled = false;
-            _cMenTreeToolsTransferFile.Enabled = false;
             _cMenTreeConnectWithOptions.Enabled = false;
             _cMenTreeToolsSort.Enabled = false;
             _cMenTreeToolsExternalApps.Enabled = false;
@@ -560,7 +525,6 @@ namespace mRemoteNG.UI.Controls
             _cMenTreeConnectWithOptionsConnectToConsoleSession.Enabled = false;
             _cMenTreeConnectWithOptionsChoosePanelBeforeConnecting.Enabled = false;
             _cMenTreeDisconnect.Enabled = false;
-            _cMenTreeToolsTransferFile.Enabled = false;
             _cMenTreeToolsExternalApps.Enabled = false;
             _cMenTreeDuplicate.Enabled = false;
             _cMenTreeDelete.Enabled = false;
@@ -579,7 +543,6 @@ namespace mRemoteNG.UI.Controls
             bool hasOpenConnections = containerInfo.Children.Any(child => child.OpenConnections.Count > 0);
             _cMenTreeDisconnect.Enabled = hasOpenConnections;
 
-            _cMenTreeToolsTransferFile.Enabled = false;
             _cMenTreeConnectWithOptionsViewOnly.Enabled = false;
         }
 
@@ -590,9 +553,6 @@ namespace mRemoteNG.UI.Controls
 
             if (connectionInfo.OpenConnections.Count == 0)
                 _cMenTreeDisconnect.Enabled = false;
-
-            if (!(connectionInfo.Protocol == ProtocolType.SSH1 | connectionInfo.Protocol == ProtocolType.SSH2))
-                _cMenTreeToolsTransferFile.Enabled = false;
 
             _cMenTreeConnectWithOptionsConnectInFullscreen.Enabled = false;
             _cMenTreeConnectWithOptionsConnectToConsoleSession.Enabled = false;
@@ -614,9 +574,6 @@ namespace mRemoteNG.UI.Controls
             if (connectionInfo.OpenConnections.Count == 0)
                 _cMenTreeDisconnect.Enabled = false;
 
-            if (!(connectionInfo.Protocol == ProtocolType.SSH1 | connectionInfo.Protocol == ProtocolType.SSH2))
-                _cMenTreeToolsTransferFile.Enabled = false;
-
             if (!(connectionInfo.Protocol == ProtocolType.RDP))
             {
                 _cMenTreeConnectWithOptionsConnectInFullscreen.Enabled = false;
@@ -626,7 +583,7 @@ namespace mRemoteNG.UI.Controls
             if (connectionInfo.Protocol == ProtocolType.IntApp)
                 _cMenTreeConnectWithOptionsNoCredentials.Enabled = false;
 
-            if (connectionInfo.Protocol != ProtocolType.RDP && connectionInfo.Protocol != ProtocolType.VNC)
+            if (connectionInfo.Protocol != ProtocolType.RDP)
                 _cMenTreeConnectWithOptionsViewOnly.Enabled = false;
 
             _cMenTreeApplyInheritanceToChildren.Enabled = false;
@@ -821,29 +778,6 @@ namespace mRemoteNG.UI.Controls
             }
         }
 
-        private void OnTransferFileClicked(object sender, EventArgs e)
-        {
-            SshTransferFile();
-        }
-
-        public void SshTransferFile()
-        {
-            try
-            {
-                WindowsUI.Show(WindowType.SSHTransfer);
-                WindowsUI.SshtransferForm.Hostname = _connectionTree.SelectedNode.Hostname;
-                WindowsUI.SshtransferForm.Username = _connectionTree.SelectedNode.Username;
-                WindowsUI.SshtransferForm.Password = _connectionTree.SelectedNode.Password.ConvertToUnsecureString();
-                WindowsUI.SshtransferForm.Port = Convert.ToString(_connectionTree.SelectedNode.Port);
-            }
-            catch (Exception ex)
-            {
-                Runtime.MessageCollector.AddExceptionStackTrace(
-                                                                "SSHTransferFile (UI.Window.ConnectionTreeWindow) failed",
-                                                                ex);
-            }
-        }
-
         private void OnDuplicateClicked(object sender, EventArgs e)
         {
             _connectionTree.DuplicateSelectedNode();
@@ -895,16 +829,6 @@ namespace mRemoteNG.UI.Controls
                 selectedNodeAsContainer =
                     _connectionTree.SelectedNode as ContainerInfo ?? _connectionTree.SelectedNode.Parent;
             Import.ImportFromRemoteDesktopManagerCsv(selectedNodeAsContainer);
-        }
-
-        private void OnImportActiveDirectoryClicked(object sender, EventArgs e)
-        {
-            WindowsUI.Show(WindowType.ActiveDirectoryImport);
-        }
-
-        private void OnImportPortScanClicked(object sender, EventArgs e)
-        {
-            WindowsUI.Show(WindowType.PortScan);
         }
 
         private void OnExportFileClicked(object sender, EventArgs e)

@@ -300,9 +300,6 @@ namespace mRemoteNG.Tools.WindowsRegistry
                 AllowedValues = allowedValues;
             }
 
-            if (ElementType == typeof(string) && privateValue != null)
-                privateValue = EnforceStringInputValidity(privateValue);
-
             return this;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using mRemoteNG.App;
 using mRemoteNG.App.Info;
@@ -19,7 +20,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
         #region Private Fields
 
         private AppUpdater _appUpdate;
-        private OptRegistryUpdatesPage pageRegSettingsInstance;
+        private readonly OptRegistryUpdatesPage _RegistrySettings = new();
 
         #endregion
 
@@ -65,14 +66,17 @@ namespace mRemoteNG.UI.Forms.OptionsPages
 
         public override void LoadSettings()
         {
-            InitialiseCheckForUpdatesOnStartupComboBox();
-            InitialiseReleaseChannelComboBox();
-
-            // Checks updates are generaly disallowed
+            // Checks the combination of the following registry settings:
+            //   1. AllowCheckForUpdates is false.
+            //   2. AllowCheckForUpdatesAutomatical and AllowCheckForUpdatesManual are false.
+            //   3. Disable page and stop processing at this point.
             if (UpdatesForbidden())
-                return; // not required to continue
+                return;
 
             chkCheckForUpdatesOnStartup.Checked = Properties.OptionsUpdatesPage.Default.CheckForUpdatesOnStartup;
+
+            InitialiseCheckForUpdatesOnStartupComboBox();
+            InitialiseReleaseChannelComboBox();
 
             chkUseProxyForAutomaticUpdates.Checked = Properties.OptionsUpdatesPage.Default.UpdateUseProxy;
             tblProxyBasic.Enabled = Properties.OptionsUpdatesPage.Default.UpdateUseProxy;
@@ -93,9 +97,12 @@ namespace mRemoteNG.UI.Forms.OptionsPages
         {
             base.SaveSettings();
 
-            // Checks updates are generaly disallowed
+            // Checks the combination of the following registry settings:
+            //   1. AllowCheckForUpdates is false.
+            //   2. AllowCheckForUpdatesAutomatical and AllowCheckForUpdatesManual are false.
+            //   3. Disable page and stop processing at this point.
             if (UpdatesForbidden())
-                return; // not required to continue
+                return;
 
             Properties.OptionsUpdatesPage.Default.CheckForUpdatesOnStartup = chkCheckForUpdatesOnStartup.Checked;
 
@@ -131,76 +138,151 @@ namespace mRemoteNG.UI.Forms.OptionsPages
 
         public override void LoadRegistrySettings()
         {
-            Type settingsType = typeof(OptRegistryUpdatesPage);
-            RegistryLoader.RegistrySettings.TryGetValue(settingsType, out var settings);
-            pageRegSettingsInstance = settings as OptRegistryUpdatesPage;
-
-            RegistryLoader.Cleanup(settingsType);
-
-            // Checks updates are generaly disallowed.
+            // Checks the combination of the following registry settings:
+            //   1. AllowCheckForUpdates is false.
+            //   2. AllowCheckForUpdatesAutomatical and AllowCheckForUpdatesManual are false.
+            //   3. Disable page and stop processing at this point.
             if (UpdatesForbidden())
-            {
-                DisableControl(chkCheckForUpdatesOnStartup);
-                DisableControl(cboUpdateCheckFrequency);
-                DisableControl(btnUpdateCheckNow);
-                DisableControl(cboReleaseChannel);
-                DisableControl(chkUseProxyForAutomaticUpdates);
-                DisableControl(tblProxyBasic);
-                DisableControl(txtProxyAddress);
-                DisableControl(numProxyPort);
-                DisableControl(chkUseProxyAuthentication);
-                DisableControl(tblProxyAuthentication);
-                DisableControl(txtProxyUsername);
-                DisableControl(txtProxyPassword);
-                DisableControl(btnTestProxy);
+                return;
 
-                lblRegistrySettingsUsedInfo.Visible = true;
-                return; // not required to continue
-            }
-
-            // Disable the option "check for updates on startup" if auto updates is disallowed.
+            // AllowCheckForUpdatesAutomatical reg setting:
+            //  1. Allowed/default: true; Disabled: false.
+            //  2. Disable the option "check for updates on startup".
             if (!CommonRegistrySettings.AllowCheckForUpdatesAutomatical)
             {
+                Properties.OptionsUpdatesPage.Default.CheckForUpdatesOnStartup = false;
                 DisableControl(chkCheckForUpdatesOnStartup);
                 DisableControl(cboUpdateCheckFrequency);
             }
 
-            // Set Update Check button state based on manual update allow state.
+            // CheckForUpdatesFrequencyDays reg setting:
+            //  1. Is 0 or less, than CheckForUpdatesOnStartup will be disabled.
+            //  2. Is Valid than set CheckForUpdatesFrequencyDays option based on value.
+            if (CommonRegistrySettings.AllowCheckForUpdatesAutomatical && _RegistrySettings.CheckForUpdatesFrequencyDays.IsSet)
+            {
+                if (_RegistrySettings.CheckForUpdatesFrequencyDays.Value < 0)
+                {
+                    Properties.OptionsUpdatesPage.Default.CheckForUpdatesOnStartup = false;
+                    DisableControl(chkCheckForUpdatesOnStartup);
+                }
+                else if (_RegistrySettings.CheckForUpdatesFrequencyDays.IsValid)
+                {
+                    Properties.OptionsUpdatesPage.Default.CheckForUpdatesOnStartup = true;
+                    DisableControl(chkCheckForUpdatesOnStartup);
+
+                    Properties.OptionsUpdatesPage.Default.CheckForUpdatesFrequencyDays = _RegistrySettings.CheckForUpdatesFrequencyDays.Value;
+                    DisableControl(cboUpdateCheckFrequency);
+                }
+            }
+
+            // Enable or disable the "Update Check" button if allowed or not.
             btnUpdateCheckNow.Enabled = CommonRegistrySettings.AllowCheckForUpdatesManual;
 
-            // Disable "CheckForUpdatesFrequencyDays" based on auto update allow state.
-            if (pageRegSettingsInstance.CheckForUpdatesFrequencyDays.IsSet && CommonRegistrySettings.AllowCheckForUpdatesAutomatical)
+            // UpdateChannel reg setting: set UpdateChannel option based on value
+            if (_RegistrySettings.UpdateChannel.IsValid)
             {
-                DisableControl(chkCheckForUpdatesOnStartup);
-                DisableControl(cboUpdateCheckFrequency);
+                Properties.OptionsUpdatesPage.Default.UpdateChannel = _RegistrySettings.UpdateChannel.Value;
+                DisableControl(cboReleaseChannel);
             }
 
-            // ***
-            // Disable controls based on the registry settings.
-            //
-            if (pageRegSettingsInstance.UpdateChannel.IsSet)
-                DisableControl(cboReleaseChannel);
-
-            if (pageRegSettingsInstance.UseProxyForUpdates.IsSet)
+            // UseProxyForUpdates reg setting: set UseProxyForUpdates option based on value
+            //  1. Continues with the options checks for "ProxyAddress" and "ProxyPort"
+            //  2. Moved on to the "UseProxyAuthentication" options if true
+            if (_RegistrySettings.UseProxyForUpdates.IsSet)
+            {
+                bool UseProxy = _RegistrySettings.UseProxyForUpdates.Value;
+                Properties.OptionsUpdatesPage.Default.UpdateUseProxy = UseProxy;
                 DisableControl(chkUseProxyForAutomaticUpdates);
 
-            if (pageRegSettingsInstance.ProxyAddress.IsSet)
-                DisableControl(txtProxyAddress);
+                // If the proxy is not used, reset the proxy address, port, and authentication settings to defaults.
+                if (!UseProxy)
+                {
+                    Properties.OptionsUpdatesPage.Default.UpdateProxyAddress = "";
+                    Properties.OptionsUpdatesPage.Default.UpdateProxyPort = 80;
+                    Properties.OptionsUpdatesPage.Default.UpdateProxyUseAuthentication = false;
+                }
 
-            if (pageRegSettingsInstance.ProxyPort.IsSet)
-                DisableControl(numProxyPort);
+                // ProxyAddress reg setting: set ProxyAddress option based on value
+                if (_RegistrySettings.ProxyAddress.IsSet && UseProxy)
+                {
+                    Properties.OptionsUpdatesPage.Default.UpdateProxyAddress = _RegistrySettings.ProxyAddress.Value;
+                    DisableControl(txtProxyAddress);
+                }
 
-            if (pageRegSettingsInstance.UseProxyAuthentication.IsSet)
+                // ProxyPort reg setting: set ProxyPort option based on value
+                if (_RegistrySettings.ProxyPort.IsSet && UseProxy)
+                {
+                    _RegistrySettings.ProxyPort.SetValidation((int)numProxyPort.Minimum, (int)numProxyPort.Maximum);
+                    if (_RegistrySettings.ProxyPort.IsValid)
+                    {
+                        Properties.OptionsUpdatesPage.Default.UpdateProxyPort = _RegistrySettings.ProxyPort.Value;
+                        DisableControl(numProxyPort);
+                    }
+                }
+            }
+
+            // UseProxyAuthentication reg setting: set UseProxyAuthentication option based on value
+            //  1. Only applied when UpdateUseProxy is true
+            //  2. Continues with the options checks for "ProxyAuthUser" and "ProxyAuthPass"
+            if (Properties.OptionsUpdatesPage.Default.UpdateUseProxy && _RegistrySettings.UseProxyAuthentication.IsSet)
+            {
+                bool UseProxyAuth = _RegistrySettings.UseProxyAuthentication.Value;
+                Properties.OptionsUpdatesPage.Default.UpdateProxyUseAuthentication = UseProxyAuth;
                 DisableControl(chkUseProxyAuthentication);
 
-            if (pageRegSettingsInstance.ProxyAuthUser.IsSet)
-                DisableControl(txtProxyUsername);
+                // If proxy authentication is not used, reset the proxy authentication username and password to defaults.
+                if (!UseProxyAuth)
+                {
+                    Properties.OptionsUpdatesPage.Default.UpdateProxyAuthUser = "";
+                    Properties.OptionsUpdatesPage.Default.UpdateProxyAuthPass = "";
+                }
 
-            if (pageRegSettingsInstance.ProxyAuthPass.IsSet)
-                DisableControl(txtProxyPassword);
+                // ProxyAuthUser reg setting: set ProxyAuthUser option based on value
+                if (_RegistrySettings.ProxyAuthUser.IsSet && UseProxyAuth)
+                {
+                    Properties.OptionsUpdatesPage.Default.UpdateProxyAuthUser = _RegistrySettings.ProxyAuthUser.Value;
+                    DisableControl(txtProxyUsername);
+                }
+
+                // ProxyAuthPass reg setting:
+                //  1. Test decription works to prevents potential issues
+                //  2. Set ProxyAuthPass option based on value
+                if (_RegistrySettings.ProxyAuthPass.IsSet && UseProxyAuth)
+                {
+                    // Prevents potential issues when using UpdateProxyAuthPass later.
+                    try
+                    {
+                        LegacyRijndaelCryptographyProvider cryptographyProvider = new();
+                        string decryptedPassword;
+                        string ProxyAuthPass = _RegistrySettings.ProxyAuthPass.Value;
+                        decryptedPassword = cryptographyProvider.Decrypt(ProxyAuthPass, Runtime.EncryptionKey);
+
+                        Properties.OptionsUpdatesPage.Default.UpdateProxyAuthPass = ProxyAuthPass;
+                        DisableControl(txtProxyPassword);
+                    }
+                    catch
+                    {
+                        // Fire-and-forget: The password in the registry is not encrypted.
+                    }
+                }
+            }
 
             // Updates the visibility of the information label indicating whether registry settings are used.
             lblRegistrySettingsUsedInfo.Visible = ShowRegistrySettingsUsedInfo();
+        }
+
+        public override bool ShowRegistrySettingsUsedInfo()
+        {
+            return !CommonRegistrySettings.AllowCheckForUpdatesAutomatical
+                || !CommonRegistrySettings.AllowCheckForUpdatesManual
+                || _RegistrySettings.CheckForUpdatesFrequencyDays.IsSet
+                || _RegistrySettings.UpdateChannel.IsValid
+                || _RegistrySettings.UseProxyForUpdates.IsSet
+                || _RegistrySettings.ProxyAddress.IsSet
+                || _RegistrySettings.ProxyPort.IsValid
+                || _RegistrySettings.UseProxyAuthentication.IsSet
+                || _RegistrySettings.ProxyAuthUser.IsSet
+                || _RegistrySettings.ProxyAuthPass.IsSet;
         }
 
         #endregion
@@ -209,7 +291,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
 
         private void chkCheckForUpdatesOnStartup_CheckedChanged(object sender, EventArgs e)
         {
-            if (pageRegSettingsInstance?.CheckForUpdatesFrequencyDays?.IsSet == false)
+            if (!_RegistrySettings.CheckForUpdatesFrequencyDays.IsValid)
                 cboUpdateCheckFrequency.Enabled = chkCheckForUpdatesOnStartup.Checked;
 
             InitialiseCheckForUpdatesOnStartupComboBox();
@@ -229,7 +311,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
 
             // Enables/disables proxy authentication controls
             bool useProxyAuth = chkUseProxyAuthentication.Checked;
-            bool useProxyAuthRegIsSet = pageRegSettingsInstance.UseProxyAuthentication?.IsSet ?? false;
+            bool useProxyAuthRegIsSet = _RegistrySettings.UseProxyAuthentication.IsSet;
             chkUseProxyAuthentication.Enabled = useProxy && !useProxyAuthRegIsSet;
             tblProxyAuthentication.Enabled = useProxy && useProxyAuth && !useProxyAuthRegIsSet;
         }
@@ -354,30 +436,65 @@ namespace mRemoteNG.UI.Forms.OptionsPages
         }
 
         /// <summary>
-        /// Checks if updates are forbidden based on registry settings.
+        /// Determines if updates are forbidden based on registry settings.
         /// </summary>
-        private static bool UpdatesForbidden()
+        /// <returns>
+        /// True if updates are forbidden; otherwise, false.
+        /// </returns>
+        private bool UpdatesForbidden()
         {
-            return !CommonRegistrySettings.AllowCheckForUpdates
+            bool disablePage = !CommonRegistrySettings.AllowCheckForUpdates
                 || (!CommonRegistrySettings.AllowCheckForUpdatesAutomatical
                 && !CommonRegistrySettings.AllowCheckForUpdatesManual);
+
+            if (disablePage)
+            {
+                DisablePage();
+
+                // Ensure the UI (CheckFrequency ComboBox)  appears correct when disabled
+                cboUpdateCheckFrequency.Items.Clear();
+                int nNever = cboUpdateCheckFrequency.Items.Add(Language.Never);
+                cboUpdateCheckFrequency.SelectedIndex = nNever;
+
+                // Ensure the UI (ReleaseChannel ComboBox) appears correct when disabled
+                cboReleaseChannel.Items.Clear();
+                int stable = cboReleaseChannel.Items.Add(UpdateChannelInfo.STABLE);
+                cboReleaseChannel.SelectedIndex = stable;
+            }
+
+            return disablePage;
         }
 
         /// <summary>
-        /// Checks if specific registry settings related to updates page are used.
+        /// Disables all controls on the page related to update settings and proxy configurations.
         /// </summary>
-        private bool ShowRegistrySettingsUsedInfo()
+        public override void DisablePage()
         {
-            return !CommonRegistrySettings.AllowCheckForUpdatesAutomatical
-                || !CommonRegistrySettings.AllowCheckForUpdatesManual
-                || pageRegSettingsInstance.CheckForUpdatesFrequencyDays.IsSet
-                || pageRegSettingsInstance.UpdateChannel.IsSet
-                || pageRegSettingsInstance.UseProxyForUpdates.IsSet
-                || pageRegSettingsInstance.ProxyAddress.IsSet
-                || pageRegSettingsInstance.ProxyPort.IsSet
-                || pageRegSettingsInstance.UseProxyAuthentication.IsSet
-                || pageRegSettingsInstance.ProxyAuthUser.IsSet
-                || pageRegSettingsInstance.ProxyAuthPass.IsSet;
+            chkCheckForUpdatesOnStartup.Checked = false;
+            chkCheckForUpdatesOnStartup.Enabled = false;
+            cboUpdateCheckFrequency.Enabled = false;
+            btnUpdateCheckNow.Enabled = false;
+            cboReleaseChannel.Enabled = false;
+
+            chkUseProxyForAutomaticUpdates.Checked = false;
+            chkUseProxyForAutomaticUpdates.Enabled = false;
+
+            tblProxyBasic.Enabled = false;
+            txtProxyAddress.Enabled = false;
+            txtProxyAddress.ReadOnly = true;
+            numProxyPort.Enabled = false;
+
+            chkUseProxyAuthentication.Checked = false;
+            chkUseProxyAuthentication.Enabled = false;
+
+            tblProxyAuthentication.Enabled = false;
+            txtProxyUsername.Enabled = false;
+            txtProxyUsername.ReadOnly = true;
+            txtProxyPassword.Enabled = false;
+            txtProxyPassword.ReadOnly = true;
+            btnTestProxy.Enabled = false;
+
+            lblRegistrySettingsUsedInfo.Visible = true;
         }
 
         #endregion

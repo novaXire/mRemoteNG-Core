@@ -161,7 +161,7 @@ namespace mRemoteNG.UI.Forms
         {
             MessageCollector messageCollector = Runtime.MessageCollector;
 
-            SettingsLoader settingsLoader = new(this, messageCollector, _quickConnectToolStrip, _externalToolsToolStrip, _multiSshToolStrip, msMain);
+            SettingsLoader settingsLoader = new(this, messageCollector, _quickConnectToolStrip, _externalToolsToolStrip, msMain);
             settingsLoader.LoadSettings();
 
             MessageCollectorSetup.SetupMessageCollector(messageCollector, _messageWriters);
@@ -252,9 +252,6 @@ namespace mRemoteNG.UI.Forms
                 case nameof(Properties.Settings.ViewMenuMessages):
                     LockToolbarPositions(Properties.Settings.Default.LockToolbars);
                     break;
-                case nameof(Properties.Settings.ViewMenuMultiSSH):
-                    LockToolbarPositions(Properties.Settings.Default.LockToolbars);
-                    break;
                 case nameof(Properties.Settings.ViewMenuQuickConnect):
                     LockToolbarPositions(Properties.Settings.Default.LockToolbars);
                     break;
@@ -265,7 +262,7 @@ namespace mRemoteNG.UI.Forms
 
         private void LockToolbarPositions(bool shouldBeLocked)
         {
-            ToolStrip[] toolbars = [_quickConnectToolStrip, _multiSshToolStrip, _externalToolsToolStrip, msMain];
+            ToolStrip[] toolbars = [_quickConnectToolStrip, _externalToolsToolStrip, msMain];
             foreach (ToolStrip toolbar in toolbars)
             {
                 toolbar.GripStyle = shouldBeLocked ? ToolStripGripStyle.Hidden : ToolStripGripStyle.Visible;
@@ -291,12 +288,10 @@ namespace mRemoteNG.UI.Forms
 
             viewMenu.TsExternalTools = _externalToolsToolStrip;
             viewMenu.TsQuickConnect = _quickConnectToolStrip;
-            viewMenu.TsMultiSsh = _multiSshToolStrip;
             viewMenu.FullscreenHandler = Fullscreen;
             viewMenu.MainForm = this;
 
             toolsMenu.MainForm = this;
-            toolsMenu.CredentialProviderCatalog = Runtime.CredentialProviderCatalog;
         }
 
         //Theming support
@@ -325,7 +320,6 @@ namespace mRemoteNG.UI.Forms
                 vsToolStripExtender.SetStyle(msMain, _themeManager.ActiveTheme.Version, _themeManager.ActiveTheme.Theme);
                 vsToolStripExtender.SetStyle(_quickConnectToolStrip, _themeManager.ActiveTheme.Version, _themeManager.ActiveTheme.Theme);
                 vsToolStripExtender.SetStyle(_externalToolsToolStrip, _themeManager.ActiveTheme.Version, _themeManager.ActiveTheme.Theme);
-                vsToolStripExtender.SetStyle(_multiSshToolStrip, _themeManager.ActiveTheme.Version, _themeManager.ActiveTheme.Theme);
 
                 if (!_themeManager.ActiveAndExtended) return;
                 tsContainer.TopToolStripPanel.BackColor = _themeManager.ActiveTheme.ExtendedPalette.getColor("CommandBarMenuDefault_Background");
@@ -348,6 +342,7 @@ namespace mRemoteNG.UI.Forms
         {
             if (!CommonRegistrySettings.AllowCheckForUpdates) return;
             if (!CommonRegistrySettings.AllowCheckForUpdatesAutomatical) return;
+            if (!CommonRegistrySettings.AllowPromptForUpdatesPreference) return;
 
             if (Properties.OptionsUpdatesPage.Default.CheckForUpdatesAsked) return;
             string[] commandButtons =
@@ -449,7 +444,7 @@ namespace mRemoteNG.UI.Forms
             }
 
             NativeMethods.ChangeClipboardChain(Handle, _fpChainedWindowHandle);
-            Shutdown.Cleanup(_quickConnectToolStrip, _externalToolsToolStrip, _multiSshToolStrip, this);
+            Shutdown.Cleanup(_quickConnectToolStrip, _externalToolsToolStrip, this);
 
             Shutdown.StartUpdate();
 
@@ -626,8 +621,7 @@ namespace mRemoteNG.UI.Forms
             if (ifc == null) return;
 
             ifc.Protocol.Focus();
-            Form conFormWindow = ifc.FindForm();
-            ((ConnectionTab)conFormWindow)?.RefreshInterfaceController();
+            Form conFormWindow = ifc.FindForm();            
         }
 
         private void PnlDock_ActiveDocumentChanged(object sender, EventArgs e)
@@ -774,17 +768,6 @@ namespace mRemoteNG.UI.Forms
             {
                 viewMenu.TsExternalTools.Visible = false;
                 viewMenu._mMenViewExtAppsToolbar.Checked = false;
-            }
-
-            if (Properties.Settings.Default.ViewMenuMultiSSH == true)
-            {
-                viewMenu.TsMultiSsh.Visible = true;
-                viewMenu._mMenViewMultiSshToolbar.Checked = true;
-            }
-            else
-            {
-                viewMenu.TsMultiSsh.Visible = false;
-                viewMenu._mMenViewMultiSshToolbar.Checked = false;
             }
 
             if (Properties.Settings.Default.ViewMenuQuickConnect == true)

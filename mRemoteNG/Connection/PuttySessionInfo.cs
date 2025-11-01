@@ -80,7 +80,9 @@ namespace mRemoteNG.Connection
             }
             catch (Exception ex)
             {
-                Runtime.MessageCollector.AddMessage(MessageClass.ErrorMsg, Language.ErrorCouldNotLaunchPutty + Environment.NewLine + ex.Message);
+                Runtime.MessageCollector.AddMessage(MessageClass.ErrorMsg,
+                                                    Language.ErrorCouldNotLaunchPutty + Environment.NewLine +
+                                                    ex.Message);
             }
         }
 

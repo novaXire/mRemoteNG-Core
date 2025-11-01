@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Runtime.Versioning;
 using mRemoteNG.App;
-using mRemoteNG.Connection.Protocol.Http;
 using mRemoteNG.Connection.Protocol.RDP;
 using mRemoteNG.Connection.Protocol.Rlogin;
 using mRemoteNG.Connection.Protocol.SSH;
 using mRemoteNG.Connection.Protocol.Telnet;
-using mRemoteNG.Connection.Protocol.VNC;
 using mRemoteNG.Messages;
 using mRemoteNG.Resources.Language;
 
@@ -21,11 +19,8 @@ namespace mRemoteNG.Tools
 
         public static int SshPort { get; set; } = (int)ProtocolSSH1.Defaults.Port;
         public static int TelnetPort { get; set; } = (int)ProtocolTelnet.Defaults.Port;
-        public static int HttpPort { get; set; } = (int)ProtocolHTTP.Defaults.Port;
-        public static int HttpsPort { get; set; } = (int)ProtocolHTTPS.Defaults.Port;
         public static int RloginPort { get; set; } = (int)ProtocolRlogin.Defaults.Port;
         public static int RdpPort { get; set; } = (int)RdpProtocol.Defaults.Port;
-        public static int VncPort { get; set; } = (int)ProtocolVNC.Defaults.Port;
         public ArrayList OpenPorts { get; set; }
         public ArrayList ClosedPorts { get; set; }
         public bool Rdp { get; set; }

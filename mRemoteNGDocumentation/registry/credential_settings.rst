@@ -1,3 +1,5 @@
+.. _credential_settings:
+
 *********************
 Credential Settings
 *********************
@@ -6,212 +8,178 @@ Credential Settings
 .. warning::
     Before proceeding with any changes to the Windows Registry, it is imperative that you carefully read and comprehend the 
     **Modifying the Registry**, **Restricted Registry Settings** and **Disclaimer** 
-    on :doc:`Registry Settings Infromation <registry_settings_information>`.
+    on :doc:`Registry Settings Infromation </registry_settings_information>`.
     
 
-Common
-======
-
-- Registry Hive: ``HKEY_LOCAL_MACHINE``
-- Registry Path: ``SOFTWARE\mRemoteNG\Credentials``
+Common settings
+===============
+These settings are defined for global configuration.
 
 
-Allow Export Usernames
-----------------------
-Specifies whether the export of usernames for saved connections is allowed.
-
-- **Value Name:** ``AllowExportUsernames``
-- **Value Type:** ``REG_SZ``
-- **Default value:** ``true``
-- **Values:**
-
-  - Disallow: ``false``
-
-
-Allow Export Passwords
-----------------------
-Specifies whether the export of passwords for saved connections is allowed.
-
-- **Value Name:** ``AllowExportPasswords``
-- **Value Type:** ``REG_SZ``
-- **Default value:** ``true``
-- **Values:**
-
-  - Disallow: ``false``
-
-
-Allow Save Usernames
+AllowExportUsernames
 --------------------
-Specifies whether the saving of usernames for saved connections is allowed.
+Determines whether exporting usernames is allowed.
 
-- **Value Name:** ``AllowSaveUsernames``
-- **Value Type:** ``REG_SZ``
-- **Default value:** ``true``
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials
+- **Value Name:** AllowExportUsernames
+- **Value Type:** REG_SZ
 - **Values:**
+  
+  - **Enable (default):** true
+  - **Disable:** false
 
-  - Disallow: ``false``
 
+AllowExportPasswords
+--------------------
+Determines whether exporting passwords is allowed.
+
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials
+- **Value Name:** AllowExportPasswords
+- **Value Type:** REG_SZ
+- **Values:**
+  
+  - **Enable (default):** true
+  - **Disable:** false
+
+
+AllowSaveUsernames
+------------------
+Determines whether saving usernames is allowed.
+
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials
+- **Value Name:** AllowSaveUsernames
+- **Value Type:** REG_SZ
+- **Values:**
+  
+  - **Enable (default):** true
+  - **Disable:** false
 
 .. note::
-   If **AllowSaveUsernames** is set to ``false``, 
-   stored user names in the connection persist until the connection goes through modification or usage. 
+   If 'AllowSaveUsernames' is set to false, stored user names in the connection persist until the connection goes through modification or usage. 
    Subsequently, stored user names are removed. 
    Additionally, new connections will not be able to store usernames.
 
 
-Allow Save Passwords
---------------------
-Specifies whether the saving of passwords for saved connections is allowed.
+AllowSavePasswords
+------------------
+Determines whether saving passwords is allowed.
 
-- **Value Name:** ``AllowSavePasswords``
-- **Value Type:** ``REG_SZ``
-- **Default value:** ``true``
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials
+- **Value Name:** AllowSavePasswords
+- **Value Type:** REG_SZ
 - **Values:**
-
-  - Disallow: ``false``
-
+  
+  - **Enable (default):** true
+  - **Disable:** false
 
 .. note::
-   If **AllowSavePasswords** is set to ``false``, 
-   stored passwords in the connection persist until the connection goes through modification or usage. 
+   If 'AllowSavePasswords' is set to false, stored passwords in the connection persist until the connection goes through modification or usage. 
    Subsequently, stored passwords are removed.
    Additionally, new connections will not be able to store passwords.
 
 
-Options
-=======
+AllowModifyCredentialSettings
+-----------------------------
+Specifies if the 'Credentials' option page is configurable.
+
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials
+- **Value Name:** AllowModifyCredentialSettings
+- **Value Type:** REG_SZ
+- **Values:**
+  
+  - **Enable (default):** true
+  - **Disable:** false
+
+.. note::
+   If 'AllowModifyCredentialSettings' is set to false, 'UseCredentials' is automatically set to 'None' (noinfo).
+
+
+Option Page Settings
+====================
 Configure the options page to modify functionalities as described.
 
-- **Registry Hive:** ``HKEY_LOCAL_MACHINE``
-- **Registry Path:** ``SOFTWARE\mRemoteNG\Credentials\Options``
-
-Use Credentials
----------------
+UseCredentials
+--------------
 Specifies the radio button state on the credentials page to prefill empty credential fields:
+- "None" is selected to leave the fields unfilled.
+- "Windows Logon Information" is chosen to autofill with Single Sign-On (SSO) data.
+- "Custom" is opted for utilizing the defined information.
 
-(1) "None" is selected to leave the fields unfilled.
-(2) "Windows Logon Information" is chosen to autofill with Single Sign-On (SSO) data.
-(3) "Custom" is opted for utilizing the defined information.
-
-
-- **Value Name:** ``UseCredentials``
-- **Value Type:** ``REG_SZ``
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials\\Options
+- **Value Name:** UseCredentials
+- **Value Type:** REG_SZ
 - **Values:**
+  
+  - Radio (1) None: `noinfo`
+  - Radio (2) Windows Logon: `windows`
+  - Radio (3) Custom: `custom`
 
-  - (1): ``noinfo``
-  - (2): ``windows``
-  - (3): ``custom``
 
-
-User Via API Default
---------------------
+UserViaAPIDefault
+-----------------
 Specifies the user set via API as the default username.
+Important: only used when "UseCredentials" is set to "Custom".
 
-- **Value Name:** ``UserViaAPIDefault``
-- **Value Type:** ``REG_SZ``
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials\\Options
+- **Value Name:** UserViaAPIDefault
+- **Value Type:** REG_SZ
 
 .. note::
-  Only takes effect if *UseCredentials* is set to ``custom`` or *DefaultUserViaAPIEnabled* is set to ``false``.
+  Only takes effect if 'UseCredentials' is set to custom.
 
 
-Default Username
-----------------
+DefaultUsername
+---------------
 Specifies the default username.
+Important: only used when "UseCredentials" is set to "Custom".
 
-- **Value Name:** ``DefaultUsername``
-- **Value Type:** ``REG_SZ``
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials\\Options
+- **Value Name:** DefaultUsername
+- **Value Type:** REG_SZ
 
 .. note::
-  Only takes effect if *UseCredentials* is set to ``custom`` or *DefaultUsernameEnabled* is set to ``false``.
+  Only takes effect if 'UseCredentials' is set to custom.
 
 
-Default Password
-----------------
+DefaultPassword
+---------------
+(currently not supported)
+
 Specifies the default password.
 
-- **Value Name:** ``DefaultPassword``
-- **Value Type:** ``REG_SZ``
-
-
 .. warning::
-  Plain-text passwords are not supported.
 
+    Do not store decrypted passwords in the registry!
+
+    Storing decrypted passwords in the registry poses a significant security risk and is strongly discouraged. It can expose sensitive information, compromise user credentials, and lead to unauthorized access. Always follow best security practices and avoid storing plaintext passwords in any form, including the registry.
+
+
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials\\Options
+- **Value Name:** DefaultPassword
+- **Value Type:** REG_SZ
 
 .. note::
-  Only takes effect if *UseCredentials* is set to ``custom`` or *DefaultPasswordEnabled* is set to ``false``.
+  Only takes effect if 'UseCredentials' is set to custom.
 
 
-Default Domain
---------------
+DefaultDomain
+-------------
 Specifies the default domain.
+Important: only used when "UseCredentials" is set to "Custom".
 
-- **Value Name:** ``DefaultDomain``
-- **Value Type:** ``REG_SZ``
+- **Registry Hive:** HKEY_LOCAL_MACHINE
+- **Registry Path:** SOFTWARE\\mRemoteNG\\Credentials\\Options
+- **Value Name:** DefaultDomain
+- **Value Type:** REG_SZ
 
 .. note::
-  Only takes effect if *UseCredentials* is set to ``custom``.
-
-
-Default Username Enabled
-------------------------
-Controls whether the default username field is enabled or disabled. 
-Locking the field may make more sense than disabling the entire settings option.
-
-- **Value Name:** ``DefaultUsernameEnabled``
-- **Value Type:** ``REG_SZ``
-- **Default value:** ``true``
-- **Values:**
-
-  - to disable: ``false``
-
-
-Default Password Enabled
-------------------------
-Controls whether the default password field is enabled or disabled. 
-Locking the field may make more sense than disabling the entire settings option.
-
-- **Value Name:** ``DefaultPasswordEnabled``
-- **Value Type:** ``REG_SZ``
-- **Default value:** ``true``
-- **Values:**
-
-  - to disable: ``false``
-
-
-Default User Via API Enabled
-----------------------------
-Controls whether the default user via API field is enabled or disabled. 
-Locking the field may make more sense than disabling the entire settings option.
-
-- **Value Name:** ``DefaultUserViaAPIEnabled``
-- **Value Type:** ``REG_SZ``
-- **Default value:** ``true``
-- **Values:**
-
-  - to disable: ``false``
-
-
-Registry Template
-=================
-
-.. code::
-
-  Windows Registry Editor Version 5.00
-
-  [HKEY_LOCAL_MACHINE\SOFTWARE\mRemoteNG\Credentials]
-  "AllowExportPasswords"="false"
-  "AllowExportUsernames"="false"
-  "AllowSavePasswords"="false"
-  "AllowSaveUsernames"="false"
-
-  [HKEY_LOCAL_MACHINE\SOFTWARE\mRemoteNG\Credentials\Options]
-  "UseCredentials"="custom"
-  "UserViaAPIDefault"=""
-  "DefaultUsername"=""
-  "DefaultPassword"=""
-  "DefaultDomain"=""
-
-  "DefaultUsernameEnabled"="false"
-  "DefaultPasswordEnabled"="false"
-  "DefaultUserViaAPIEnabled"="false"
-
+  Only takes effect if 'UseCredentials' is set to custom.

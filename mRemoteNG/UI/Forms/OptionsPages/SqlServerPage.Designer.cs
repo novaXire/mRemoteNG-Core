@@ -1,5 +1,6 @@
-﻿using mRemoteNG.UI.Controls;
-using System;
+﻿
+
+using mRemoteNG.UI.Controls;
 
 namespace mRemoteNG.UI.Forms.OptionsPages
 {
@@ -36,12 +37,9 @@ namespace mRemoteNG.UI.Forms.OptionsPages
             lblSQLReadOnly = new MrngLabel();
             lblSQLType = new MrngLabel();
             txtSQLType = new MrngComboBox();
-            pnlSQLCon = new System.Windows.Forms.TableLayoutPanel();
-            pnlOptions = new System.Windows.Forms.Panel();
-            lblRegistrySettingsUsedInfo = new System.Windows.Forms.Label();
+            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)imgConnectionStatus).BeginInit();
-            pnlSQLCon.SuspendLayout();
-            pnlOptions.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblSQLDatabaseName
@@ -71,7 +69,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
             chkUseSQLServer._mice = MrngCheckBox.MouseState.OUT;
             chkUseSQLServer.AutoSize = true;
             chkUseSQLServer.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            chkUseSQLServer.Location = new System.Drawing.Point(3, 3);
+            chkUseSQLServer.Location = new System.Drawing.Point(9, 7);
             chkUseSQLServer.Name = "chkUseSQLServer";
             chkUseSQLServer.Size = new System.Drawing.Size(244, 17);
             chkUseSQLServer.TabIndex = 2;
@@ -150,7 +148,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
             // 
             btnTestConnection._mice = MrngButton.MouseState.OUT;
             btnTestConnection.Enabled = false;
-            btnTestConnection.Location = new System.Drawing.Point(3, 194);
+            btnTestConnection.Location = new System.Drawing.Point(9, 198);
             btnTestConnection.Name = "btnTestConnection";
             btnTestConnection.Size = new System.Drawing.Size(153, 25);
             btnTestConnection.TabIndex = 11;
@@ -161,7 +159,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
             // imgConnectionStatus
             // 
             imgConnectionStatus.Image = Properties.Resources.F1Help_16x;
-            imgConnectionStatus.Location = new System.Drawing.Point(163, 199);
+            imgConnectionStatus.Location = new System.Drawing.Point(169, 203);
             imgConnectionStatus.Name = "imgConnectionStatus";
             imgConnectionStatus.Size = new System.Drawing.Size(16, 16);
             imgConnectionStatus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -171,7 +169,7 @@ namespace mRemoteNG.UI.Forms.OptionsPages
             // lblTestConnectionResults
             // 
             lblTestConnectionResults.AutoSize = true;
-            lblTestConnectionResults.Location = new System.Drawing.Point(3, 222);
+            lblTestConnectionResults.Location = new System.Drawing.Point(9, 226);
             lblTestConnectionResults.Name = "lblTestConnectionResults";
             lblTestConnectionResults.Size = new System.Drawing.Size(125, 13);
             lblTestConnectionResults.TabIndex = 13;
@@ -216,7 +214,6 @@ namespace mRemoteNG.UI.Forms.OptionsPages
             txtSQLType._mice = MrngComboBox.MouseState.HOVER;
             txtSQLType.Dock = System.Windows.Forms.DockStyle.Fill;
             txtSQLType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            txtSQLType.Enabled = false;
             txtSQLType.FormattingEnabled = true;
             txtSQLType.Items.AddRange(new object[] { "mssql", "mysql" });
             txtSQLType.Location = new System.Drawing.Point(163, 3);
@@ -224,78 +221,53 @@ namespace mRemoteNG.UI.Forms.OptionsPages
             txtSQLType.Size = new System.Drawing.Size(235, 21);
             txtSQLType.TabIndex = 21;
             // 
-            // pnlSQLCon
+            // tableLayoutPanel1
             // 
-            pnlSQLCon.ColumnCount = 2;
-            pnlSQLCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
-            pnlSQLCon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            pnlSQLCon.Controls.Add(lblSQLType, 0, 0);
-            pnlSQLCon.Controls.Add(txtSQLType, 1, 0);
-            pnlSQLCon.Controls.Add(lblSQLServer, 0, 1);
-            pnlSQLCon.Controls.Add(chkSQLReadOnly, 1, 5);
-            pnlSQLCon.Controls.Add(lblSQLReadOnly, 0, 5);
-            pnlSQLCon.Controls.Add(lblSQLDatabaseName, 0, 2);
-            pnlSQLCon.Controls.Add(txtSQLDatabaseName, 1, 2);
-            pnlSQLCon.Controls.Add(lblSQLUsername, 0, 3);
-            pnlSQLCon.Controls.Add(lblSQLPassword, 0, 4);
-            pnlSQLCon.Controls.Add(txtSQLServer, 1, 1);
-            pnlSQLCon.Controls.Add(txtSQLPassword, 1, 4);
-            pnlSQLCon.Controls.Add(txtSQLUsername, 1, 3);
-            pnlSQLCon.Enabled = false;
-            pnlSQLCon.Location = new System.Drawing.Point(3, 26);
-            pnlSQLCon.Name = "pnlSQLCon";
-            pnlSQLCon.RowCount = 7;
-            pnlSQLCon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            pnlSQLCon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            pnlSQLCon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            pnlSQLCon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            pnlSQLCon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            pnlSQLCon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
-            pnlSQLCon.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            pnlSQLCon.Size = new System.Drawing.Size(401, 162);
-            pnlSQLCon.TabIndex = 22;
-            // 
-            // pnlOptions
-            // 
-            pnlOptions.Controls.Add(chkUseSQLServer);
-            pnlOptions.Controls.Add(pnlSQLCon);
-            pnlOptions.Controls.Add(btnTestConnection);
-            pnlOptions.Controls.Add(lblTestConnectionResults);
-            pnlOptions.Controls.Add(imgConnectionStatus);
-            pnlOptions.Dock = System.Windows.Forms.DockStyle.Top;
-            pnlOptions.Location = new System.Drawing.Point(0, 30);
-            pnlOptions.Name = "pnlOptions";
-            pnlOptions.Size = new System.Drawing.Size(610, 329);
-            pnlOptions.TabIndex = 23;
-            // 
-            // lblRegistrySettingsUsedInfo
-            // 
-            lblRegistrySettingsUsedInfo.BackColor = System.Drawing.SystemColors.ControlLight;
-            lblRegistrySettingsUsedInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            lblRegistrySettingsUsedInfo.ForeColor = System.Drawing.SystemColors.ControlText;
-            lblRegistrySettingsUsedInfo.Location = new System.Drawing.Point(0, 0);
-            lblRegistrySettingsUsedInfo.Name = "lblRegistrySettingsUsedInfo";
-            lblRegistrySettingsUsedInfo.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            lblRegistrySettingsUsedInfo.Size = new System.Drawing.Size(610, 30);
-            lblRegistrySettingsUsedInfo.TabIndex = 24;
-            lblRegistrySettingsUsedInfo.Text = "Some settings are configured by your Administrator. Please contact your administrator for more information.";
-            lblRegistrySettingsUsedInfo.Visible = false;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tableLayoutPanel1.Controls.Add(lblSQLType, 0, 0);
+            tableLayoutPanel1.Controls.Add(txtSQLType, 1, 0);
+            tableLayoutPanel1.Controls.Add(lblSQLServer, 0, 1);
+            tableLayoutPanel1.Controls.Add(chkSQLReadOnly, 1, 5);
+            tableLayoutPanel1.Controls.Add(lblSQLReadOnly, 0, 5);
+            tableLayoutPanel1.Controls.Add(lblSQLDatabaseName, 0, 2);
+            tableLayoutPanel1.Controls.Add(txtSQLDatabaseName, 1, 2);
+            tableLayoutPanel1.Controls.Add(lblSQLUsername, 0, 3);
+            tableLayoutPanel1.Controls.Add(lblSQLPassword, 0, 4);
+            tableLayoutPanel1.Controls.Add(txtSQLServer, 1, 1);
+            tableLayoutPanel1.Controls.Add(txtSQLPassword, 1, 4);
+            tableLayoutPanel1.Controls.Add(txtSQLUsername, 1, 3);
+            tableLayoutPanel1.Location = new System.Drawing.Point(9, 30);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 7;
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            tableLayoutPanel1.Size = new System.Drawing.Size(401, 162);
+            tableLayoutPanel1.TabIndex = 22;
             // 
             // SqlServerPage
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            Controls.Add(pnlOptions);
-            Controls.Add(lblRegistrySettingsUsedInfo);
+            Controls.Add(tableLayoutPanel1);
+            Controls.Add(lblTestConnectionResults);
+            Controls.Add(imgConnectionStatus);
+            Controls.Add(btnTestConnection);
+            Controls.Add(chkUseSQLServer);
             Margin = new System.Windows.Forms.Padding(4);
             Name = "SqlServerPage";
             Size = new System.Drawing.Size(610, 490);
             ((System.ComponentModel.ISupportInitialize)imgConnectionStatus).EndInit();
-            pnlSQLCon.ResumeLayout(false);
-            pnlSQLCon.PerformLayout();
-            pnlOptions.ResumeLayout(false);
-            pnlOptions.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         internal Controls.MrngLabel lblSQLDatabaseName;
@@ -314,8 +286,6 @@ namespace mRemoteNG.UI.Forms.OptionsPages
         internal Controls.MrngLabel lblSQLReadOnly;
         internal Controls.MrngLabel lblSQLType;
         private MrngComboBox txtSQLType;
-        private System.Windows.Forms.TableLayoutPanel pnlSQLCon;
-        private System.Windows.Forms.Panel pnlOptions;
-        internal System.Windows.Forms.Label lblRegistrySettingsUsedInfo;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }

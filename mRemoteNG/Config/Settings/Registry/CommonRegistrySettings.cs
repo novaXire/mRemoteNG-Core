@@ -6,6 +6,9 @@ using mRemoteNG.Tools.WindowsRegistry;
 namespace mRemoteNG.Config.Settings.Registry
 {
     [SupportedOSPlatform("windows")]
+    /// Static utility class that provides access to and management of registry settings on the local machine.
+    /// It abstracts complex registry operations and centralizes the handling of various registry keys.
+    /// Benefits: Simplified code, enhances maintainability, and ensures consistency. #ReadOnly
     public static class CommonRegistrySettings
     {
         #region general update registry settings
@@ -34,69 +37,54 @@ namespace mRemoteNG.Config.Settings.Registry
         /// </remarks>
         public static bool AllowCheckForUpdatesManual { get; }
 
+        /// <summary>
+        /// Specifies whether a question about checking for updates is displayed at startup.
+        /// </summary>
+        public static bool AllowPromptForUpdatesPreference { get; }
 
         #endregion
 
         #region general credential registry settings
 
         /// <summary>
-        /// Specifies whether the export of passwords for saved connections is allowed.
+        /// Setting that indicates whether exporting passwords is allowed.
         /// </summary>
         public static bool AllowExportPasswords { get; }
 
         /// <summary>
-        /// Specifies whether the export of usernames for saved connections is allowed.
+        /// Setting that indicates whether exporting usernames is allowed.
         /// </summary>
         public static bool AllowExportUsernames { get; }
 
         /// <summary>
-        /// Specifies whether the saving of usernames for saved connections is allowed.
+        /// Setting that indicates whether saving passwords in connections is allowed.
         /// </summary>
         public static bool AllowSavePasswords { get; }
 
         /// <summary>
-        /// Specifies whether the saving of passwords for saved connections is allowed.
+        /// Setting that indicates whether saving in connections usernames is allowed.
         /// </summary>
         public static bool AllowSaveUsernames { get; }
 
         #endregion
 
-        #region general notification registry settings
-
-        /// <summary>
-        /// Specifies whether logging to a file is allowed or not.
-        /// </summary>
-        public static bool AllowLogging { get; }
-
-        /// <summary>
-        /// Specifies whether notifications are allowed or not.
-        /// </summary>
-        public static bool AllowNotifications { get; }
-
-        /// <summary>
-        /// Specifies whether pop-up notifications are allowed or not.
-        /// </summary>
-        public static bool AllowPopups { get; }
-
-        #endregion
-
         static CommonRegistrySettings()
         {
-            IRegistryRead regValueUtility = new WinRegistry();
+            IRegistry regValueUtility = new WinRegistry();
             RegistryHive hive = WindowsRegistryInfo.Hive;
 
-            #region update registry settings
+            #region update registry settings setup
 
             string updateSubkey = WindowsRegistryInfo.Update;
 
             AllowCheckForUpdates = regValueUtility.GetBoolValue(hive, updateSubkey, nameof(AllowCheckForUpdates), true);
             AllowCheckForUpdatesAutomatical = regValueUtility.GetBoolValue(hive, updateSubkey, nameof(AllowCheckForUpdatesAutomatical), AllowCheckForUpdates);
             AllowCheckForUpdatesManual = regValueUtility.GetBoolValue(hive, updateSubkey, nameof(AllowCheckForUpdatesManual), AllowCheckForUpdates);
-            
+            AllowPromptForUpdatesPreference = regValueUtility.GetBoolValue(hive, updateSubkey, nameof(AllowPromptForUpdatesPreference), AllowCheckForUpdates);
 
             #endregion
 
-            #region credential registry settings
+            #region credential registry settings setup
 
             string credentialSubkey = WindowsRegistryInfo.Credential;
 
@@ -106,17 +94,6 @@ namespace mRemoteNG.Config.Settings.Registry
             AllowSaveUsernames = regValueUtility.GetBoolValue(hive, credentialSubkey, nameof(AllowSaveUsernames), true);
 
             #endregion
-
-            #region notification registry settings
-
-            string notificationSubkey = WindowsRegistryInfo.Notification;
-
-            AllowLogging = regValueUtility.GetBoolValue(hive, notificationSubkey, nameof(AllowLogging), true);
-            AllowNotifications = regValueUtility.GetBoolValue(hive, notificationSubkey, nameof(AllowNotifications), true);
-            AllowPopups = regValueUtility.GetBoolValue(hive, notificationSubkey, nameof(AllowPopups), true);
-
-            #endregion
-
         }
     }
 }

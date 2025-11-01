@@ -6,9 +6,7 @@ using System.Xml;
 using mRemoteNG.App;
 using mRemoteNG.Connection;
 using mRemoteNG.Connection.Protocol;
-using mRemoteNG.Connection.Protocol.Http;
 using mRemoteNG.Connection.Protocol.RDP;
-using mRemoteNG.Connection.Protocol.VNC;
 using mRemoteNG.Container;
 using mRemoteNG.Messages;
 using mRemoteNG.Security;
@@ -226,16 +224,8 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
                 if (_confVersion >= 0.3)
                 {
                     if (_confVersion < 0.7)
-                    {
-                        if (xmlnode.GetAttributeAsBool("UseVNC"))
-                        {
-                            connectionInfo.Protocol = ProtocolType.VNC;
-                            connectionInfo.Port = xmlnode.GetAttributeAsInt("VNCPort");
-                        }
-                        else
-                        {
-                            connectionInfo.Protocol = ProtocolType.RDP;
-                        }
+                    {                       
+                        connectionInfo.Protocol = ProtocolType.RDP;                        
                     }
                 }
                 else
@@ -248,9 +238,7 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
                 {
                     if (_confVersion < 0.7)
                     {
-                        connectionInfo.Port = xmlnode.GetAttributeAsBool("UseVNC")
-                            ? xmlnode.GetAttributeAsInt("VNCPort")
-                            : xmlnode.GetAttributeAsInt("RDPPort");
+                        connectionInfo.Port = xmlnode.GetAttributeAsInt("RDPPort");
                     }
 
                     connectionInfo.UseConsoleSession = xmlnode.GetAttributeAsBool("ConnectToConsole");
@@ -259,10 +247,7 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
                 {
                     if (_confVersion < 0.7)
                     {
-                        if (xmlnode.GetAttributeAsBool("UseVNC"))
-                            connectionInfo.Port = (int)ProtocolVNC.Defaults.Port;
-                        else
-                            connectionInfo.Port = (int)RdpProtocol.Defaults.Port;
+                        connectionInfo.Port = (int)RdpProtocol.Defaults.Port;
                     }
 
                     connectionInfo.UseConsoleSession = false;
@@ -373,32 +358,6 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
                     connectionInfo.Inheritance.PostExtApp = xmlnode.GetAttributeAsBool("InheritPostExtApp");
                 }
 
-                if (_confVersion >= 1.7)
-                {
-                    connectionInfo.VNCCompression = xmlnode.GetAttributeAsEnum<ProtocolVNC.Compression>("VNCCompression");
-                    connectionInfo.VNCEncoding = xmlnode.GetAttributeAsEnum<ProtocolVNC.Encoding>("VNCEncoding");
-                    connectionInfo.VNCAuthMode = xmlnode.GetAttributeAsEnum<ProtocolVNC.AuthMode>("VNCAuthMode");
-                    connectionInfo.VNCProxyType = xmlnode.GetAttributeAsEnum<ProtocolVNC.ProxyType>("VNCProxyType");
-                    connectionInfo.VNCProxyIP = xmlnode.GetAttributeAsString("VNCProxyIP");
-                    connectionInfo.VNCProxyPort = xmlnode.GetAttributeAsInt("VNCProxyPort");
-                    connectionInfo.VNCProxyUsername = xmlnode.GetAttributeAsString("VNCProxyUsername");
-                    connectionInfo.VNCProxyPassword = _decryptor.Decrypt(xmlnode.GetAttributeAsString("VNCProxyPassword"));
-                    connectionInfo.VNCColors = xmlnode.GetAttributeAsEnum<ProtocolVNC.Colors>("VNCColors");
-                    connectionInfo.VNCSmartSizeMode = xmlnode.GetAttributeAsEnum<ProtocolVNC.SmartSizeMode>("VNCSmartSizeMode");
-                    connectionInfo.VNCViewOnly = xmlnode.GetAttributeAsBool("VNCViewOnly");
-                    connectionInfo.Inheritance.VNCCompression = xmlnode.GetAttributeAsBool("InheritVNCCompression");
-                    connectionInfo.Inheritance.VNCEncoding = xmlnode.GetAttributeAsBool("InheritVNCEncoding");
-                    connectionInfo.Inheritance.VNCAuthMode = xmlnode.GetAttributeAsBool("InheritVNCAuthMode");
-                    connectionInfo.Inheritance.VNCProxyType = xmlnode.GetAttributeAsBool("InheritVNCProxyType");
-                    connectionInfo.Inheritance.VNCProxyIP = xmlnode.GetAttributeAsBool("InheritVNCProxyIP");
-                    connectionInfo.Inheritance.VNCProxyPort = xmlnode.GetAttributeAsBool("InheritVNCProxyPort");
-                    connectionInfo.Inheritance.VNCProxyUsername = xmlnode.GetAttributeAsBool("InheritVNCProxyUsername");
-                    connectionInfo.Inheritance.VNCProxyPassword = xmlnode.GetAttributeAsBool("InheritVNCProxyPassword");
-                    connectionInfo.Inheritance.VNCColors = xmlnode.GetAttributeAsBool("InheritVNCColors");
-                    connectionInfo.Inheritance.VNCSmartSizeMode = xmlnode.GetAttributeAsBool("InheritVNCSmartSizeMode");
-                    connectionInfo.Inheritance.VNCViewOnly = xmlnode.GetAttributeAsBool("InheritVNCViewOnly");
-                }
-
                 if (_confVersion >= 1.8)
                 {
                     connectionInfo.RDPAuthenticationLevel = xmlnode.GetAttributeAsEnum<AuthenticationLevel>("RDPAuthenticationLevel");
@@ -406,8 +365,7 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
                 }
 
                 if (_confVersion >= 1.9)
-                {
-                    connectionInfo.RenderingEngine = xmlnode.GetAttributeAsEnum<HTTPBase.RenderingEngine>("RenderingEngine");
+                {                   
                     connectionInfo.MacAddress = xmlnode.GetAttributeAsString("MacAddress");
                     connectionInfo.Inheritance.RenderingEngine = xmlnode.GetAttributeAsBool("InheritRenderingEngine");
                     connectionInfo.Inheritance.MacAddress = xmlnode.GetAttributeAsBool("InheritMacAddress");
@@ -510,19 +468,14 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Xml
                     connectionInfo.Inheritance.DisableFullWindowDrag = xmlnode.GetAttributeAsBool("InheritDisableFullWindowDrag");
                     connectionInfo.Inheritance.DisableMenuAnimations = xmlnode.GetAttributeAsBool("InheritDisableMenuAnimations");
                     connectionInfo.Inheritance.DisableCursorShadow = xmlnode.GetAttributeAsBool("InheritDisableCursorShadow");
-                    connectionInfo.Inheritance.DisableCursorBlinking = xmlnode.GetAttributeAsBool("InheritDisableCursorBlinking");
-                    connectionInfo.ExternalCredentialProvider = xmlnode.GetAttributeAsEnum("ExternalCredentialProvider", ExternalCredentialProvider.None);
+                    connectionInfo.Inheritance.DisableCursorBlinking = xmlnode.GetAttributeAsBool("InheritDisableCursorBlinking");                    
                     connectionInfo.Inheritance.ExternalCredentialProvider = xmlnode.GetAttributeAsBool("InheritExternalCredentialProvider");
                     connectionInfo.UserViaAPI = xmlnode.GetAttributeAsString("UserViaAPI");
-                    connectionInfo.Inheritance.UserViaAPI = xmlnode.GetAttributeAsBool("InheritUserViaAPI");
-                    connectionInfo.ExternalAddressProvider = xmlnode.GetAttributeAsEnum("ExternalAddressProvider", ExternalAddressProvider.None);
-                    connectionInfo.EC2InstanceId = xmlnode.GetAttributeAsString("EC2InstanceId");
-                    connectionInfo.EC2Region = xmlnode.GetAttributeAsString("EC2Region");
+                    connectionInfo.Inheritance.UserViaAPI = xmlnode.GetAttributeAsBool("InheritUserViaAPI");                    
                     connectionInfo.UseRestrictedAdmin = xmlnode.GetAttributeAsBool("UseRestrictedAdmin");
                     connectionInfo.Inheritance.UseRestrictedAdmin = xmlnode.GetAttributeAsBool("InheritUseRestrictedAdmin");
                     connectionInfo.UseRCG = xmlnode.GetAttributeAsBool("UseRCG");
-                    connectionInfo.Inheritance.UseRCG = xmlnode.GetAttributeAsBool("InheritUseRCG");
-                    connectionInfo.RDGatewayExternalCredentialProvider = xmlnode.GetAttributeAsEnum("RDGatewayExternalCredentialProvider", ExternalCredentialProvider.None);
+                    connectionInfo.Inheritance.UseRCG = xmlnode.GetAttributeAsBool("InheritUseRCG");                    
                     connectionInfo.RDGatewayUserViaAPI = xmlnode.GetAttributeAsString("RDGatewayUserViaAPI");
                     connectionInfo.Inheritance.RDGatewayExternalCredentialProvider = xmlnode.GetAttributeAsBool("InheritRDGatewayExternalCredentialProvider");
                     connectionInfo.Inheritance.RDGatewayUserViaAPI = xmlnode.GetAttributeAsBool("InheritRDGatewayUserViaAPI");

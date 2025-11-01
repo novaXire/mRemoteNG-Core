@@ -45,10 +45,26 @@ namespace mRemoteNG.UI.Forms.OptionsPages
         }
 
         /// <summary>
-        /// Checks if registry settings were applied and disables the corresponding UI controls.
-        /// If any settings are applied, it also displays an information label.
+        /// Loads registry settings related to update options and proxy configurations.
+        /// This method retrieves values from the registry and initializes the corresponding controls
+        /// on the page with these values. It also updates internal flags and properties accordingly.
         /// </summary>
         public virtual void LoadRegistrySettings()
+        {
+        }
+
+        /// <summary>
+        /// Determines if any registry settings are being used.
+        /// </summary>
+        /// <returns>
+        /// A boolean value indicating whether registry settings are used, as determined by the configuration on the options page.
+        /// </returns>
+        public virtual bool ShowRegistrySettingsUsedInfo()
+        {
+            return false;
+        }
+
+        public virtual void DisablePage()
         {
         }
 
