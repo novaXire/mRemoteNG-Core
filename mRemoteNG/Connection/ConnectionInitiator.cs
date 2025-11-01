@@ -63,6 +63,19 @@ namespace mRemoteNG.Connection
 
             try
             {
+                if (!string.IsNullOrEmpty(connectionInfo.EC2InstanceId))
+                {
+                    try
+                    {
+                        string host = await ExternalConnectors.AWS.EC2FetchDataService.GetEC2InstanceDataAsync("AWSAPI:" + connectionInfo.EC2InstanceId, connectionInfo.EC2Region);
+                        if (!string.IsNullOrEmpty(host))
+                            connectionInfo.Hostname = host;
+                    }
+                    catch
+                    {
+                    }
+                }
+
                 if (string.IsNullOrEmpty(connectionInfo.Hostname))
                 {
                     if (!ProtocolFeature.SupportBlankHostname(connectionInfo.Protocol))

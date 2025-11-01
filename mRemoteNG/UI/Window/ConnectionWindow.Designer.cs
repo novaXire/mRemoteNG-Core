@@ -9,6 +9,8 @@ namespace mRemoteNG.UI.Window
     {
         internal ContextMenuStrip cmenTab;
         private ToolStripMenuItem cmenTabFullscreen;
+        private ToolStripMenuItem cmenTabTransferFile;
+        private ToolStripMenuItem cmenTabSendSpecialKeys;
         private ToolStripSeparator cmenTabSep1;
         private ToolStripSeparator cmenTabSep2;
         private ToolStripMenuItem cmenTabRenameTab;
@@ -19,8 +21,11 @@ namespace mRemoteNG.UI.Window
         private ToolStripMenuItem cmenTabSmartSize;
         private ToolStripMenuItem cmenTabSendSpecialKeysCtrlAltDel;
         private ToolStripMenuItem cmenTabSendSpecialKeysCtrlEsc;
+        private ToolStripMenuItem cmenTabViewOnly;
         internal ToolStripMenuItem cmenTabReconnect;
         internal ToolStripMenuItem cmenTabExternalApps;
+        private ToolStripMenuItem cmenTabStartChat;
+        private ToolStripMenuItem cmenTabRefreshScreen;
         private ToolStripMenuItem cmenTabPuttySettings;
 
 
@@ -38,7 +43,12 @@ namespace mRemoteNG.UI.Window
             this.cmenTabDuplicateTab = new System.Windows.Forms.ToolStripMenuItem();
             this.cmenTabSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.cmenTabFullscreen = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmenTabSmartSize = new System.Windows.Forms.ToolStripMenuItem();      
+            this.cmenTabSmartSize = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmenTabViewOnly = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmenTabStartChat = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmenTabRefreshScreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmenTabTransferFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmenTabSendSpecialKeys = new System.Windows.Forms.ToolStripMenuItem();
             this.cmenTabSendSpecialKeysCtrlAltDel = new System.Windows.Forms.ToolStripMenuItem();
             this.cmenTabSendSpecialKeysCtrlEsc = new System.Windows.Forms.ToolStripMenuItem();
             this.cmenTabSep2 = new System.Windows.Forms.ToolStripSeparator();
@@ -69,7 +79,12 @@ namespace mRemoteNG.UI.Window
             this.cmenTabDuplicateTab,
             this.cmenTabSep1,
             this.cmenTabFullscreen,
-            this.cmenTabSmartSize,        
+            this.cmenTabSmartSize,
+            this.cmenTabViewOnly,
+            this.cmenTabStartChat,
+            this.cmenTabRefreshScreen,
+            this.cmenTabTransferFile,
+            this.cmenTabSendSpecialKeys,
             this.cmenTabSep2,
             this.cmenTabPuttySettings,
             this.cmenTabExternalApps});
@@ -136,7 +151,46 @@ namespace mRemoteNG.UI.Window
             this.cmenTabSmartSize.Image = global::mRemoteNG.Properties.Resources.Resize_16x;
             this.cmenTabSmartSize.Name = "cmenTabSmartSize";
             this.cmenTabSmartSize.Size = new System.Drawing.Size(230, 22);
-            this.cmenTabSmartSize.Text = "SmartSize (RDP)";
+            this.cmenTabSmartSize.Text = "SmartSize (RDP/VNC)";
+            // 
+            // cmenTabViewOnly
+            // 
+            this.cmenTabViewOnly.Image = global::mRemoteNG.Properties.Resources.Monitor_16x;
+            this.cmenTabViewOnly.Name = "cmenTabViewOnly";
+            this.cmenTabViewOnly.Size = new System.Drawing.Size(230, 22);
+            this.cmenTabViewOnly.Text = "View Only (VNC)";
+            // 
+            // cmenTabStartChat
+            // 
+            this.cmenTabStartChat.Image = global::mRemoteNG.Properties.Resources.Message_16x;
+            this.cmenTabStartChat.Name = "cmenTabStartChat";
+            this.cmenTabStartChat.Size = new System.Drawing.Size(230, 22);
+            this.cmenTabStartChat.Text = "Start Chat (VNC)";
+            this.cmenTabStartChat.Visible = false;
+            // 
+            // cmenTabRefreshScreen
+            // 
+            this.cmenTabRefreshScreen.Image = global::mRemoteNG.Properties.Resources.Refresh_16x;
+            this.cmenTabRefreshScreen.Name = "cmenTabRefreshScreen";
+            this.cmenTabRefreshScreen.Size = new System.Drawing.Size(230, 22);
+            this.cmenTabRefreshScreen.Text = "Refresh Screen (VNC)";
+            // 
+            // cmenTabTransferFile
+            // 
+            this.cmenTabTransferFile.Image = global::mRemoteNG.Properties.Resources.SyncArrow_16x;
+            this.cmenTabTransferFile.Name = "cmenTabTransferFile";
+            this.cmenTabTransferFile.Size = new System.Drawing.Size(230, 22);
+            this.cmenTabTransferFile.Text = "Transfer File (SSH)";
+            // 
+            // cmenTabSendSpecialKeys
+            // 
+            this.cmenTabSendSpecialKeys.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmenTabSendSpecialKeysCtrlAltDel,
+            this.cmenTabSendSpecialKeysCtrlEsc});
+            this.cmenTabSendSpecialKeys.Image = global::mRemoteNG.Properties.Resources.ToggleOfficeKeyboardScheme_16x;
+            this.cmenTabSendSpecialKeys.Name = "cmenTabSendSpecialKeys";
+            this.cmenTabSendSpecialKeys.Size = new System.Drawing.Size(230, 22);
+            this.cmenTabSendSpecialKeys.Text = "Send special Keys (VNC)";
             // 
             // cmenTabSendSpecialKeysCtrlAltDel
             // 

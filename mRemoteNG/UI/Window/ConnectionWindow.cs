@@ -9,6 +9,7 @@ using mRemoteNG.Config;
 using mRemoteNG.Connection;
 using mRemoteNG.Connection.Protocol;
 using mRemoteNG.Connection.Protocol.RDP;
+using mRemoteNG.Connection.Protocol.VNC;
 using mRemoteNG.Messages;
 using mRemoteNG.Properties;
 using mRemoteNG.Themes;
@@ -77,6 +78,12 @@ namespace mRemoteNG.UI.Window
             // event handlers for all context menu items...
             cmenTabFullscreen.Click += (sender, args) => ToggleFullscreen();
             cmenTabSmartSize.Click += (sender, args) => ToggleSmartSize();
+            cmenTabViewOnly.Click += (sender, args) => ToggleViewOnly();
+            cmenTabStartChat.Click += (sender, args) => StartChat();
+            cmenTabTransferFile.Click += (sender, args) => TransferFile();
+            cmenTabRefreshScreen.Click += (sender, args) => RefreshScreen();
+            cmenTabSendSpecialKeysCtrlAltDel.Click += (sender, args) => SendSpecialKeys(ProtocolVNC.SpecialKeys.CtrlAltDel);
+            cmenTabSendSpecialKeysCtrlEsc.Click += (sender, args) => SendSpecialKeys(ProtocolVNC.SpecialKeys.CtrlEsc);
             cmenTabRenameTab.Click += (sender, args) => RenameTab();
             cmenTabDuplicateTab.Click += (sender, args) => DuplicateTab();
             cmenTabReconnect.Click += (sender, args) => Reconnect();
@@ -257,6 +264,11 @@ namespace mRemoteNG.UI.Window
         {
             cmenTabFullscreen.Text = Language.Fullscreen;
             cmenTabSmartSize.Text = Language.SmartSize;
+            cmenTabViewOnly.Text = Language.ViewOnly;
+            cmenTabStartChat.Text = Language.StartChat;
+            cmenTabTransferFile.Text = Language.TransferFile;
+            cmenTabRefreshScreen.Text = Language.RefreshScreen;
+            cmenTabSendSpecialKeys.Text = Language.SendSpecialKeys;
             cmenTabSendSpecialKeysCtrlAltDel.Text = Language.CtrlAltDel;
             cmenTabSendSpecialKeysCtrlEsc.Text = Language.CtrlEsc;
             cmenTabExternalApps.Text = Language._Tools;
@@ -347,6 +359,16 @@ namespace mRemoteNG.UI.Window
                 InterfaceControl interfaceControl = GetInterfaceControl();
                 if (interfaceControl == null) return;
 
+                if (interfaceControl.Protocol is ISupportsViewOnly viewOnly)
+                {
+                    cmenTabViewOnly.Visible = true;
+                    cmenTabViewOnly.Checked = viewOnly.ViewOnly;
+                }
+                else
+                {
+                    cmenTabViewOnly.Visible = false;
+                }
+
                 if (interfaceControl.Info.Protocol == ProtocolType.RDP)
                 {
                     RdpProtocol rdp = (RdpProtocol)interfaceControl.Protocol;
@@ -360,7 +382,30 @@ namespace mRemoteNG.UI.Window
                     cmenTabFullscreen.Visible = false;
                     cmenTabSmartSize.Visible = false;
                 }
-              
+
+                if (interfaceControl.Info.Protocol == ProtocolType.VNC)
+                {
+                    ProtocolVNC vnc = (ProtocolVNC)interfaceControl.Protocol;
+                    cmenTabSendSpecialKeys.Visible = true;
+                    cmenTabSmartSize.Visible = true;
+                    cmenTabStartChat.Visible = true;
+                    cmenTabRefreshScreen.Visible = true;
+                    cmenTabTransferFile.Visible = false;
+                }
+                else
+                {
+                    cmenTabSendSpecialKeys.Visible = false;
+                    cmenTabStartChat.Visible = false;
+                    cmenTabRefreshScreen.Visible = false;
+                    cmenTabTransferFile.Visible = false;
+                }
+
+                if (interfaceControl.Info.Protocol == ProtocolType.SSH1 |
+                    interfaceControl.Info.Protocol == ProtocolType.SSH2)
+                {
+                    cmenTabTransferFile.Visible = true;
+                }
+
                 cmenTabPuttySettings.Visible = interfaceControl.Protocol is PuttyBase;
 
                 AddExternalApps();
@@ -391,6 +436,119 @@ namespace mRemoteNG.UI.Window
             catch (Exception ex)
             {
                 Runtime.MessageCollector.AddExceptionMessage("ToggleSmartSize (UI.Window.ConnectionWindow) failed", ex);
+            }
+        }
+
+        private void TransferFile()
+        {
+            try
+            {
+                InterfaceControl interfaceControl = GetInterfaceControl();
+                if (interfaceControl == null) return;
+
+                if (interfaceControl.Info.Protocol == ProtocolType.SSH1 |
+                    interfaceControl.Info.Protocol == ProtocolType.SSH2)
+                    SshTransferFile();
+                else if (interfaceControl.Info.Protocol == ProtocolType.VNC)
+                    VncTransferFile();
+            }
+            catch (Exception ex)
+            {
+                Runtime.MessageCollector.AddExceptionMessage("TransferFile (UI.Window.ConnectionWindow) failed", ex);
+            }
+        }
+
+        private void SshTransferFile()
+        {
+            try
+            {
+                InterfaceControl interfaceControl = GetInterfaceControl();
+                if (interfaceControl == null) return;
+
+                WindowsUI.Show(WindowType.SSHTransfer);
+                ConnectionInfo connectionInfo = interfaceControl.Info;
+
+                WindowsUI.SshtransferForm.Hostname = connectionInfo.Hostname;
+                WindowsUI.SshtransferForm.Username = connectionInfo.Username;
+                WindowsUI.SshtransferForm.Password = connectionInfo.Password.ConvertToUnsecureString();
+                WindowsUI.SshtransferForm.Port = Convert.ToString(connectionInfo.Port);
+            }
+            catch (Exception ex)
+            {
+                Runtime.MessageCollector.AddExceptionMessage("SSHTransferFile (UI.Window.ConnectionWindow) failed", ex);
+            }
+        }
+
+        private void VncTransferFile()
+        {
+            try
+            {
+                InterfaceControl interfaceControl = GetInterfaceControl();
+                ProtocolVNC vnc = interfaceControl?.Protocol as ProtocolVNC;
+                vnc?.StartFileTransfer();
+            }
+            catch (Exception ex)
+            {
+                Runtime.MessageCollector.AddExceptionMessage("VNCTransferFile (UI.Window.ConnectionWindow) failed", ex);
+            }
+        }
+
+        private void ToggleViewOnly()
+        {
+            try
+            {
+                InterfaceControl interfaceControl = GetInterfaceControl();
+                if (!(interfaceControl?.Protocol is ISupportsViewOnly viewOnly))
+                    return;
+
+                cmenTabViewOnly.Checked = !cmenTabViewOnly.Checked;
+                viewOnly.ToggleViewOnly();
+            }
+            catch (Exception ex)
+            {
+                Runtime.MessageCollector.AddExceptionMessage("ToggleViewOnly (UI.Window.ConnectionWindow) failed", ex);
+            }
+        }
+
+        private void StartChat()
+        {
+            try
+            {
+                InterfaceControl interfaceControl = GetInterfaceControl();
+                ProtocolVNC vnc = interfaceControl?.Protocol as ProtocolVNC;
+                vnc?.StartChat();
+            }
+            catch (Exception ex)
+            {
+                Runtime.MessageCollector.AddExceptionMessage("StartChat (UI.Window.ConnectionWindow) failed", ex);
+            }
+        }
+
+        private void RefreshScreen()
+        {
+            try
+            {
+                InterfaceControl interfaceControl = GetInterfaceControl();
+                ProtocolVNC vnc = interfaceControl?.Protocol as ProtocolVNC;
+                vnc?.RefreshScreen();
+            }
+            catch (Exception ex)
+            {
+                Runtime.MessageCollector.AddExceptionMessage("RefreshScreen (UI.Window.ConnectionWindow) failed", ex);
+            }
+        }
+
+        private void SendSpecialKeys(ProtocolVNC.SpecialKeys keys)
+        {
+            try
+            {
+                InterfaceControl interfaceControl = GetInterfaceControl();
+                ProtocolVNC vnc = interfaceControl?.Protocol as ProtocolVNC;
+                vnc?.SendSpecialKeys(keys);
+            }
+            catch (Exception ex)
+            {
+                Runtime.MessageCollector.AddExceptionMessage("SendSpecialKeys (UI.Window.ConnectionWindow) failed", ex);
             }
         }
 

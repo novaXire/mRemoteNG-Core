@@ -11,17 +11,17 @@ using System.Resources;
 [assembly: AssemblyTitle("mRemoteNG")]
 [assembly: AssemblyDescription("Multi-Remote Next Generation Connection Manager")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("mRemoteNG")]
+[assembly: AssemblyCompany("Profi-KOM Ltd.")]
 [assembly: AssemblyProduct("mRemoteNG Connection Manager")]
-[assembly: AssemblyCopyright("(c) 2024 mRemoteNG")]
+[assembly: AssemblyCopyright("(c) 2025 mRemoteNG")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Version information
-[assembly: AssemblyVersion("1.77.3.2961")]
-[assembly: AssemblyFileVersion("1.77.3.2961")]
+[assembly: AssemblyVersion("1.77.3.2850")]
+[assembly: AssemblyFileVersion("1.77.3.2850")]
 [assembly: NeutralResourcesLanguageAttribute("en-US")]
-[assembly: AssemblyInformationalVersion("1.77.3 (Nightly Build 2961)")]
+[assembly: AssemblyInformationalVersion("1.77.3 (Nightly Build 2850)")]
 
 // Logging
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]

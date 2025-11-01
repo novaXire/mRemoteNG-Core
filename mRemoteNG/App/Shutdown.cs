@@ -33,6 +33,7 @@ namespace mRemoteNG.App
 
         public static void Cleanup(Control quickConnectToolStrip,
                                    ExternalToolsToolStrip externalToolsToolStrip,
+                                   MultiSshToolStrip multiSshToolStrip,
                                    FrmMain frmMain)
         {
             try
@@ -40,7 +41,7 @@ namespace mRemoteNG.App
                 StopPuttySessionWatcher();
                 DisposeNotificationAreaIcon();
                 SaveConnections();
-                SaveSettings(quickConnectToolStrip, externalToolsToolStrip, frmMain);
+                SaveSettings(quickConnectToolStrip, externalToolsToolStrip, multiSshToolStrip, frmMain);
                 UnregisterBrowsers();
             }
             catch (Exception ex)
@@ -66,8 +67,7 @@ namespace mRemoteNG.App
             DateTime updateDate;
             DateTime currentDate = DateTime.Now;
 
-            //OBSOLETE: Settings.Default.SaveConsOnExit is obsolete and should be removed in a future release
-            if (Properties.OptionsStartupExitPage.Default.SaveConnectionsOnExit || (Properties.OptionsBackupPage.Default.SaveConnectionsFrequency == (int)ConnectionsBackupFrequencyEnum.OnExit))
+            if ((Properties.OptionsBackupPage.Default.SaveConnectionsFrequency == (int)ConnectionsBackupFrequencyEnum.OnExit))
             {
                 Runtime.ConnectionsService.SaveConnections();
 				return;
@@ -94,9 +94,10 @@ namespace mRemoteNG.App
 
         private static void SaveSettings(Control quickConnectToolStrip,
                                          ExternalToolsToolStrip externalToolsToolStrip,
+                                         MultiSshToolStrip multiSshToolStrip,
                                          FrmMain frmMain)
         {
-            Config.Settings.SettingsSaver.SaveSettings(quickConnectToolStrip, externalToolsToolStrip,
+            Config.Settings.SettingsSaver.SaveSettings(quickConnectToolStrip, externalToolsToolStrip, multiSshToolStrip,
                                                        frmMain);
         }
 

@@ -4,6 +4,7 @@ using System.Runtime.Versioning;
 using System.Text;
 using mRemoteNG.Connection;
 using mRemoteNG.Container;
+using mRemoteNG.Credential;
 using mRemoteNG.Security;
 using mRemoteNG.Tools;
 using mRemoteNG.Tree;
@@ -15,14 +16,18 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
     public class CsvConnectionsSerializerMremotengFormat : ISerializer<ConnectionInfo, string>
     {
         private readonly SaveFilter _saveFilter;
+        private readonly ICredentialRepositoryList _credentialRepositoryList;
 
         public Version Version { get; } = new Version(2, 8);
 
-        public CsvConnectionsSerializerMremotengFormat(SaveFilter saveFilter)
+        public CsvConnectionsSerializerMremotengFormat(SaveFilter saveFilter,
+                                                       ICredentialRepositoryList credentialRepositoryList)
         {
             saveFilter.ThrowIfNull(nameof(saveFilter));
+            credentialRepositoryList.ThrowIfNull(nameof(credentialRepositoryList));
 
             _saveFilter = saveFilter;
+            _credentialRepositoryList = credentialRepositoryList;
         }
 
         public string Serialize(ConnectionTreeModel connectionTreeModel)
@@ -126,6 +131,7 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
               .Append(FormatForCsv(con.UseRCG))
               .Append(FormatForCsv(con.UseVmId))
               .Append(FormatForCsv(con.UseEnhancedMode))
+              .Append(FormatForCsv(con.RenderingEngine))
               .Append(FormatForCsv(con.RDPAuthenticationLevel))
               .Append(FormatForCsv(con.LoadBalanceInfo))
               .Append(FormatForCsv(con.Colors))
@@ -154,18 +160,34 @@ namespace mRemoteNG.Config.Serializers.ConnectionSerializers.Csv
               .Append(FormatForCsv(con.UserField))
               .Append(FormatForCsv(con.ExtApp))
               .Append(FormatForCsv(con.Favorite))
+              .Append(FormatForCsv(con.VNCCompression))
+              .Append(FormatForCsv(con.VNCEncoding))
+              .Append(FormatForCsv(con.VNCAuthMode))
+              .Append(FormatForCsv(con.VNCProxyType))
+              .Append(FormatForCsv(con.VNCProxyIP))
+              .Append(FormatForCsv(con.VNCProxyPort))
+              .Append(FormatForCsv(con.VNCProxyUsername))
+              .Append(FormatForCsv(con.VNCProxyPassword))
+              .Append(FormatForCsv(con.VNCColors))
+              .Append(FormatForCsv(con.VNCSmartSizeMode))
+              .Append(FormatForCsv(con.VNCViewOnly))
               .Append(FormatForCsv(con.RDGatewayUsageMethod))
               .Append(FormatForCsv(con.RDGatewayHostname))
               .Append(FormatForCsv(con.RDGatewayUseConnectionCredentials))
               .Append(FormatForCsv(con.RDGatewayUsername))
               .Append(FormatForCsv(con.RDGatewayPassword))
               .Append(FormatForCsv(con.RDGatewayDomain))
+              .Append(FormatForCsv(con.RDGatewayExternalCredentialProvider))
               .Append(FormatForCsv(con.RDGatewayUserViaAPI))
               .Append(FormatForCsv(con.RedirectAudioCapture))
               .Append(FormatForCsv(con.RdpVersion))
               .Append(FormatForCsv(con.RDPStartProgram))
               .Append(FormatForCsv(con.RDPStartProgramWorkDir))
               .Append(FormatForCsv(con.UserViaAPI))
+              .Append(FormatForCsv(con.EC2InstanceId))
+              .Append(FormatForCsv(con.EC2Region))
+              .Append(FormatForCsv(con.ExternalCredentialProvider))
+              .Append(FormatForCsv(con.ExternalAddressProvider))
               ;
 
 

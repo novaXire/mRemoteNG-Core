@@ -38,11 +38,8 @@
     <Setting Name="ConDefaultRedirectKeys" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ConDefaultRedirectDiskDrives" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Local</Value>
-    </Setting>
-    <Setting Name="ConDefaultRedirectDiskDrivesCustom" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Local</Value>
+    <Setting Name="ConDefaultRedirectDiskDrives" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ConDefaultRedirectPrinters" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -165,6 +162,72 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SetHostnameLikeDisplayName" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCAuthMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">AuthVNC</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCColors" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ColNormal</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCSmartSizeMode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SmartSAspect</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCViewOnly" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCCompression" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CompNone</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCEncoding" Type="System.String" Scope="User">
+      <Value Profile="(Default)">EncHextile</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCProxyIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ConDefaultVNCProxyPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ConDefaultVNCProxyPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCProxyType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ProxyNone</Value>
+    </Setting>
+    <Setting Name="ConDefaultVNCProxyUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="InhDefaultVNCAuthMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCColors" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCSmartSizeMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCViewOnly" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCCompression" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCEncoding" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCProxyIP" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCProxyPassword" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCProxyPort" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCProxyType" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="InhDefaultVNCProxyUsername" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SingleClickSwitchesToOpenConnection" Type="System.Boolean" Scope="User">
@@ -374,6 +437,15 @@
     <Setting Name="LockToolbars" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="MultiSshToolbarLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">0, 0</Value>
+    </Setting>
+    <Setting Name="MultiSshToolbarParentDock" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MultiSshToolbarVisible" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="TrackActiveConnectionInConnectionTree" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -459,6 +531,9 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ViewMenuExternalTools" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ViewMenuMultiSSH" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ConDefaultRenderingEngine" Type="System.String" Scope="User">

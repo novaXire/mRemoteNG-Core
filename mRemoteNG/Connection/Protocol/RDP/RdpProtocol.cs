@@ -439,6 +439,34 @@ namespace mRemoteNG.Connection.Protocol.RDP
                             string gwu = connectionInfo.RDGatewayUsername;
                             string gwp = connectionInfo.RDGatewayPassword;
                             string gwd = connectionInfo.RDGatewayDomain;
+                            string pkey = "";
+
+                        // access secret server api if necessary
+                        if (InterfaceControl.Info.RDGatewayExternalCredentialProvider == ExternalCredentialProvider.DelineaSecretServer)
+                        {
+                            try
+                            {
+                                string RDGUserViaAPI = InterfaceControl.Info.RDGatewayUserViaAPI;
+                                ExternalConnectors.DSS.SecretServerInterface.FetchSecretFromServer($"{RDGUserViaAPI}", out gwu, out gwp, out gwd, out pkey);
+                            }
+                            catch (Exception ex)
+                            {
+                                Event_ErrorOccured(this, "Secret Server Interface Error: " + ex.Message, 0);
+                            }
+                        }
+                        else if (InterfaceControl.Info.ExternalCredentialProvider == ExternalCredentialProvider.ClickstudiosPasswordState)
+                        {
+                            try
+                            {
+                                string RDGUserViaAPI = InterfaceControl.Info.RDGatewayUserViaAPI;
+                                ExternalConnectors.CPS.PasswordstateInterface.FetchSecretFromServer($"{RDGUserViaAPI}", out gwu, out gwp, out gwd, out pkey);
+                            }
+                            catch (Exception ex)
+                            {
+                                Event_ErrorOccured(this, "Passwordstate Interface Error: " + ex.Message, 0);
+                            }
+                        }
+
 
                         if (connectionInfo.RDGatewayUseConnectionCredentials != RDGatewayUseConnectionCredentials.AccessToken)
                         {
@@ -511,7 +539,32 @@ namespace mRemoteNG.Connection.Protocol.RDP
                 string userName = connectionInfo?.Username ?? "";
                 string domain = connectionInfo?.Domain ?? "";
                 string userViaApi = connectionInfo?.UserViaAPI ?? "";
+                string pkey = "";
                 string password = (connectionInfo?.Password?.ConvertToUnsecureString() ?? "");
+
+                // access secret server api if necessary
+                if (InterfaceControl.Info.ExternalCredentialProvider == ExternalCredentialProvider.DelineaSecretServer)
+                {
+                    try
+                    {
+                        ExternalConnectors.DSS.SecretServerInterface.FetchSecretFromServer($"{userViaApi}", out userName, out password, out domain, out pkey);
+                    }
+                    catch (Exception ex)
+                    {
+                        Event_ErrorOccured(this, "Secret Server Interface Error: " + ex.Message, 0);
+                    }
+                }
+                else if (InterfaceControl.Info.ExternalCredentialProvider == ExternalCredentialProvider.ClickstudiosPasswordState)
+                {
+                    try
+                    {
+                        ExternalConnectors.CPS.PasswordstateInterface.FetchSecretFromServer($"{userViaApi}", out userName, out password, out domain, out pkey);
+                    }
+                    catch (Exception ex)
+                    {
+                        Event_ErrorOccured(this, "Passwordstate Interface Error: " + ex.Message, 0);
+                    }
+                }
 
                 if (string.IsNullOrEmpty(userName))
                 {
@@ -520,8 +573,20 @@ namespace mRemoteNG.Connection.Protocol.RDP
                         case "windows":
                             _rdpClient.UserName = Environment.UserName;
                             break;
-                        case "custom":
+                        case "custom" when !string.IsNullOrEmpty(Properties.OptionsCredentialsPage.Default.DefaultUsername):
                             _rdpClient.UserName = Properties.OptionsCredentialsPage.Default.DefaultUsername;
+                            break;
+                        case "custom":
+                            try
+                            {
+                                ExternalConnectors.DSS.SecretServerInterface.FetchSecretFromServer(Properties.OptionsCredentialsPage.Default.UserViaAPIDefault, out userName, out password, out domain, out pkey);
+                                _rdpClient.UserName = userName;
+                            }
+                            catch (Exception ex)
+                            {
+                                Event_ErrorOccured(this, "Secret Server Interface Error: " + ex.Message, 0);
+                            }
+
                             break;
                     }
                 }

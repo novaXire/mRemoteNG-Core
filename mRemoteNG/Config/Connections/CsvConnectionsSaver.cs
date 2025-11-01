@@ -28,7 +28,7 @@ namespace mRemoteNG.Config.Connections
         public void Save(ConnectionTreeModel connectionTreeModel, string propertyNameTrigger = "")
         {
             CsvConnectionsSerializerMremotengFormat csvConnectionsSerializer =
-                new(_saveFilter);
+                new(_saveFilter, Runtime.CredentialProviderCatalog);
             FileDataProvider dataProvider = new(_connectionFileName);
             string csvContent = csvConnectionsSerializer.Serialize(connectionTreeModel);
             dataProvider.Save(csvContent);
